@@ -1,4 +1,4 @@
-/* Google Fonts से Modern & Editorial Fonts इम्पोर्ट किए */
+/* Google Fonts से Modern & Editorial Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Syne:wght@700;800&display=swap');
 
 :root {
@@ -29,17 +29,18 @@ body {
 /* Header & Navigation */
 header {
     text-align: center;
-    padding: 80px 20px;
-    background: linear-gradient(180deg, rgba(102,252,241,0.1) 0%, rgba(11,12,16,1) 100%);
+    padding: 100px 20px 60px 20px;
+    background: linear-gradient(180deg, rgba(102,252,241,0.15) 0%, rgba(11,12,16,1) 100%);
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
 }
 
 header h1 {
     font-family: var(--font-heading);
-    font-size: 4rem;
+    font-size: 5rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -1px;
+    letter-spacing: -2px;
     background: linear-gradient(45deg, #fff, var(--accent-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -47,11 +48,25 @@ header h1 {
 }
 
 header p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-muted);
     font-weight: 300;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
+}
+
+/* Cart Status Badge Floating */
+.floating-cart-status {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--surface-color);
+    border: 1px solid var(--accent-color);
+    padding: 12px 24px;
+    border-radius: 30px;
+    z-index: 1000;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(102,252,241,0.2);
 }
 
 /* Main Layout Grid */
@@ -74,76 +89,130 @@ section {
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-section:hover {
-    transform: translateY(-5px);
-    border-color: rgba(102,252,241,0.2);
-}
-
 section h2 {
     font-family: var(--font-heading);
-    font-size: 2rem;
-    margin-bottom: 25px;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Product Section & Grid Design */
+.products-section {
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.product-card {
+    background: var(--surface-color);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
 }
 
-section h2::after {
-    content: '';
+.product-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-color);
+    box-shadow: 0 15px 30px rgba(102,252,241,0.1);
+}
+
+.tag {
     position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--accent-color);
-    border-radius: 2px;
+    top: 20px;
+    left: 20px;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    z-index: 2;
 }
 
-/* Forms & Inputs (Sleek Tech Look) */
+.product-img-placeholder {
+    background: rgba(0, 0, 0, 0.4);
+    height: 220px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin: 10px 0 20px 0;
+}
+
+/* Forms, Inputs & Select Dropdown */
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-top: 5px;
 }
 
-input[type="file"], input[type="email"], input[type="password"] {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+input, select {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     padding: 16px;
     border-radius: 12px;
-    color: #fff;
+    color: #fff !important;
     font-family: var(--font-body);
     font-size: 1rem;
     transition: all 0.3s ease;
 }
 
-input:focus {
+input:focus, select:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(102,252,241,0.1);
+    border-color: var(--accent-color) !important;
 }
 
-/* Buttons (Luxury Conversion Ready) */
+/* Checkout and Cart Overlay Section */
+.checkout-box {
+    background: linear-gradient(135deg, #1f2833 0%, #151b24 100%);
+    border: 2px solid rgba(102,252,241,0.2);
+}
+
+/* Buttons Styling */
 button {
     background: var(--text-main);
     color: var(--bg-color);
     border: none;
     padding: 16px 32px;
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     border-radius: 12px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.3s ease;
-    display: inline-block;
 }
 
 button:hover {
@@ -152,28 +221,15 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Specific Sections Customization */
-.appointment-section {
-    text-align: center;
-    background: linear-gradient(135deg, #1f2833 0%, #0f141c 100%);
-}
-
-.appointment-section button {
-    margin-top: 15px;
+.action-btn {
     background: var(--accent-color);
     color: var(--bg-color);
 }
 
-.appointment-section button:hover {
-    background: #fff;
-    box-shadow: 0 8px 25px rgba(255,255,255,0.2);
-}
-
-/* Footer */
 footer {
     text-align: center;
     padding: 60px 20px;
     color: var(--text-secondary);
     font-size: 0.9rem;
-    letter-spacing: 1px;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }

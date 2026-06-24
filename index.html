@@ -3,117 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpecAI - Precision Meets Personality</title>
+    <title>SpecAI — Optics Elevation</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="auth-status-bar" id="auth-status">Status: Guest User</div>
-    <div class="floating-cart-status">🛒 Cart: <span id="cart-count">0</span> Item(s)</div>
+    <div class="auth-status-bar" id="auth-status">Guest Access</div>
+    <div class="floating-cart-status">Bag: <span id="cart-count">0</span> Product(s)</div>
 
     <header>
-        <h1>SpecAI</h1>
-        <p>Where Precision Meets Personality.</p>
+        <div class="brand-logo">× SpecAI.</div>
+        <h1>Optics<br>Elevation</h1>
+        <p>Blends cutting-edge tech with timeless aesthetics to deliver eyewear that elevates your style experience.</p>
     </header>
 
     <main>
         
-        <section id="catalog-section">
-            <h2>Discover Best Sellers</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;">Sleek functionality meets high-end luxury eyewear.</p>
+        <section class="products-section">
+            <h2>Best-selling Glasses</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px;">A unique blend of elegance, cutting-edge tech, and comfort.</p>
             
             <div class="product-grid">
                 <div class="product-card">
-                    <div class="tag">TRENDING</div>
+                    <div class="tag">ITALIAN ACETATE</div>
                     <div class="product-img-placeholder">🕶️</div>
-                    <h3>SpecAI Aviator X</h3>
-                    <p class="price">$149</p>
-                    <button onclick="handleAddToCart('SpecAI Aviator X', 149)">Add To Cart</button>
+                    <h3>Italian Acetate Core</h3>
+                    <p class="price">$179</p>
+                    <button onclick="handleAddToCart('Italian Acetate Core', 179)">Add To Bag</button>
                 </div>
 
                 <div class="product-card">
-                    <div class="tag">PREMIUM</div>
-                    <div class="product-img-placeholder"> 👓</div>
-                    <h3>SpecAI Matte Round</h3>
-                    <p class="price">$129</p>
-                    <button onclick="handleAddToCart('SpecAI Matte Round', 129)">Add To Cart</button>
+                    <div class="tag">SOFT CAT-EYE</div>
+                    <div class="product-img-placeholder">👓</div>
+                    <h3>VERA – Soft Cat-eye</h3>
+                    <p class="price">$199</p>
+                    <button onclick="handleAddToCart('VERA – Soft Cat-eye', 199)">Add To Bag</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="tag">MINIMALIST</div>
+                    <div class="product-img-placeholder">🕶️</div>
+                    <h3>ROVE – Round Minimal</h3>
+                    <p class="price">$185</p>
+                    <button onclick="handleAddToCart('ROVE – Round Minimal', 185)">Add To Bag</button>
                 </div>
             </div>
-        </section>
-
-        <section id="auth-section" class="hidden-section" style="border: 1px solid var(--text-muted);">
-            <h2>Authentication Required</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;" id="auth-message">Please create an account or sign in to proceed with your action.</p>
-            
-            <form id="signup-form">
-                <label>Email Address:</label>
-                <input type="email" id="email" placeholder="enter your email" required>
-                
-                <label>Password:</label>
-                <input type="password" id="password" placeholder="enter password" required>
-                
-                <button type="submit" style="background: var(--accent-color); color: #000;">Authenticate & Continue</button>
-            </form>
         </section>
 
         <section id="appointment-section">
-            <h2>Smart Repair & Expert Appointment</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;">Upload your damaged frame photo to book a VIP technical slot.</p>
+            <h2>Intelligent Style & Repair Comfort</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px;">Upload a crisp photo of your current damage or frame issue to book an expert digital slot.</p>
             
             <form id="smart-booking-form">
-                <label>Your Full Name:</label>
-                <input type="text" id="customer-name" placeholder="Enter your full name" required>
+                <label>Full Structural Name:</label>
+                <input type="text" id="customer-name" placeholder="E.g., Sarah Jenkins" required>
 
-                <label>Select Damage Type:</label>
+                <label>Primary Damage Profile:</label>
                 <select id="glasses-problem" required>
-                    <option value="" disabled selected>Choose your problem...</option>
-                    <option value="Cracked Lens">Lens is broken / Cracked Lens</option>
-                    <option value="Broken Frame">Frame is damaged / Broken Frame</option>
-                    <option value="Scratched Coating">Heavy scratches on lens surface</option>
+                    <option value="" disabled selected>Identify the framework issue...</option>
+                    <option value="Cracked Lens Structure">Cracked Lens Structure</option>
+                    <option value="Damaged Bridge / Hinge">Damaged Bridge or Broken Frame Hinge</option>
+                    <option value="Heavy Surface Scratches">Heavy Scratches / Antireflective Peeling</option>
                 </select>
 
-                <label>Upload Image of Damaged Glasses:</label>
+                <label>Upload High-Resolution Condition Image:</label>
                 <input type="file" id="glasses-image" accept="image/*" required>
                 
-                <button type="submit" style="background: var(--text-main); color: #000;">Book Slot With Image</button>
+                <button type="submit" style="margin-top: 10px;">Register Technical Slot</button>
             </form>
         </section>
 
-        <section id="checkout-section" class="hidden-section" style="border: 2px solid var(--accent-color);">
-            <h2>Secure Payment Gateway</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;">Complete your purchase securely.</p>
+        <section id="auth-section" class="hidden-section" style="border: 1px solid var(--accent-dark);">
+            <h2>Secure Identity Verification</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" id="auth-message">Please synchronize a personal account to proceed to final checkouts or file uploads.</p>
             
-            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                <p>Items: <strong id="cart-items-list" style="color: var(--accent-color);">None</strong></p>
-                <p style="margin-top: 10px; font-size: 1.2rem;">Total Amount: <strong id="cart-total-price" style="color: var(--text-muted);">$0</strong></p>
+            <form id="signup-form">
+                <label>Secure Email Address:</label>
+                <input type="email" id="email" placeholder="name@domain.com" required>
+                
+                <label>Create Account Password:</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+                
+                <button type="submit">Verify & Continue</button>
+            </form>
+        </section>
+
+        <section id="checkout-section" class="hidden-section">
+            <h2>Secure Order Authorization</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px;">Review details and submit digital payment.</p>
+            
+            <div style="background: #f8fafc; padding: 25px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">Selected Artifacts:</p>
+                <p><strong id="cart-items-list" style="color: var(--accent-dark); font-size: 1.1rem;">None Selected</strong></p>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);">Aggregate Value:</p>
+                <p><strong id="cart-total-price" style="color: var(--accent-dark); font-size: 1.6rem;">$0</strong></p>
             </div>
 
             <form id="payment-form">
-                <label>Cardholder Name:</label>
-                <input type="text" id="card-name" placeholder="John Doe" required>
+                <label>Authorized Cardholder:</label>
+                <input type="text" id="card-name" placeholder="Sarah Jenkins" required>
 
-                <label>Card Number:</label>
-                <input type="text" id="card-number" placeholder="4111 2222 3333 4444" maxlength="16" required>
+                <label>16-Digit Card Number:</label>
+                <input type="text" id="card-number" placeholder="4111 5555 6666 7777" maxlength="16" required>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div>
-                        <label>Expiry Date (MM/YY):</label>
-                        <input type="text" id="card-expiry" placeholder="12/29" maxlength="5" required>
+                        <label>Validity (MM/YY):</label>
+                        <input type="text" id="card-expiry" placeholder="08/30" maxlength="5" required>
                     </div>
                     <div>
-                        <label>CVV:</label>
-                        <input type="password" id="card-cvv" placeholder="***" maxlength="3" required>
+                        <label>Secure CVV Code:</label>
+                        <input type="password" id="card-cvv" placeholder="•••" maxlength="3" required>
                     </div>
                 </div>
 
-                <button type="submit" style="background: var(--accent-color); color: #000; margin-top: 15px;">Authorize Secure Payment</button>
+                <button type="submit" style="margin-top: 15px;">Process Global Secure Payment</button>
             </form>
         </section>
 
     </main>
 
     <footer>
-        <p>&copy; 2026 SpecAI. Elevating Vision & Style. All Rights Reserved.</p>
+        <p>&copy; 2026 SpecAI Global. All Rights Reserved. Precision Engineering.</p>
     </footer>
 
     <script type="module">
@@ -134,30 +145,23 @@
       const auth = getAuth(app); 
       const db = getFirestore(app);
 
-      // Track current active state flow
       let currentUser = null;
-      let pendingAction = null; // Can be 'checkout' or 'booking'
+      let pendingAction = null; 
 
-      // Listen to Authentication States Live
       onAuthStateChanged(auth, (user) => {
           if (user) {
               currentUser = user;
-              document.getElementById('auth-status').innerText = `Status: Logged In (${user.email})`;
-              document.getElementById('auth-section').classList.add('hidden-section'); // Hide login box if logged in
+              document.getElementById('auth-status').innerText = `Active Session: ${user.email}`;
+              document.getElementById('auth-section').classList.add('hidden-section');
               
-              // If user logged in just now, trigger their pending flow
-              if (pendingAction === 'checkout') {
-                  showCheckoutGateway();
-              } else if (pendingAction === 'booking') {
-                  executeBookingPipeline();
-              }
+              if (pendingAction === 'checkout') { showCheckoutGateway(); } 
+              else if (pendingAction === 'booking') { executeBookingPipeline(); }
           } else {
               currentUser = null;
-              document.getElementById('auth-status').innerText = "Status: Guest User";
+              document.getElementById('auth-status').innerText = "Guest Access";
           }
       });
 
-      // Handle Add to Cart & Checkout Flow Trigger
       window.handleAddToCart = function(name, price) {
           window.globalCart.items.push(name);
           window.globalCart.price += price;
@@ -166,11 +170,11 @@
           document.getElementById('cart-items-list').innerText = window.globalCart.items.join(', ');
           document.getElementById('cart-total-price').innerText = "$" + window.globalCart.price;
 
-          alert(`${name} added to cart! Proceeding to secure layout...`);
+          alert(`Added ${name} directly to bag.`);
 
           if (!currentUser) {
               pendingAction = 'checkout';
-              document.getElementById('auth-message').innerText = "Please create an account or login to proceed to the Payment Gateway.";
+              document.getElementById('auth-message').innerText = "An active customer identification token is required to initialize the secure order pipeline.";
               document.getElementById('auth-section').classList.remove('hidden-section');
               document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
           } else {
@@ -184,14 +188,13 @@
           document.getElementById('checkout-section').scrollIntoView({ behavior: 'smooth' });
       }
 
-      // Handle Appointment Form Submit Trigger
       const bookingForm = document.getElementById('smart-booking-form');
       if (bookingForm) {
           bookingForm.addEventListener('submit', (e) => {
               e.preventDefault();
               if (!currentUser) {
                   pendingAction = 'booking';
-                  document.getElementById('auth-message').innerText = "Authentication mandatory! Register an account first to submit damage images and secure an appointment.";
+                  document.getElementById('auth-message').innerText = "Authentication gate active. Please verify your structural identity to route the damaged frame asset data.";
                   document.getElementById('auth-section').classList.remove('hidden-section');
                   document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
               } else {
@@ -209,26 +212,24 @@
 
               if(!customerName || !selectedProblem) return;
 
-              const appointmentLetter = `SpecAI Verification Letter. Customer: ${customerName}. Damage Status: ${selectedProblem}.`;
+              const appointmentLetter = `SpecAI Verification Pipeline. Frame Identity: ${customerName}. Damage Profile: ${selectedProblem}.`;
 
-              // Save directly into your Firebase Firestore Database 
               await setDoc(doc(db, "appointments", customerName), {
                   customerName: customerName,
                   problemType: selectedProblem,
-                  imageName: imageFile ? imageFile.name : "none",
+                  imageFileName: imageFile ? imageFile.name : "none",
                   appointmentLetter: appointmentLetter,
                   userEmail: currentUser.email,
-                  dateCreated: new Date().toISOString()
+                  synchronizedAt: new Date().toISOString()
               });
 
-              alert(`Success! Appointment registered under user account. Data pushed to Firestore.`);
+              alert(`Technical assessment slot allocated successfully for ${customerName}! Data transmitted to Firestore.`);
               bookingForm.reset();
           } catch (error) {
-              alert("Database Error: " + error.message);
+              alert("Transmission Error: " + error.message);
           }
       }
 
-      // Handle Secure Registration/Auth Form Submission
       const signupForm = document.getElementById('signup-form');
       if (signupForm) {
           signupForm.addEventListener('submit', (e) => {
@@ -237,20 +238,16 @@
               const password = document.getElementById('password').value;
 
               createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    alert("Account successfully created and synchronized!");
-                    signupForm.reset();
-                })
-                .catch((err) => alert("Authentication failed: " + err.message));
+                .then(() => { alert("Customer synchronization successful."); signupForm.reset(); })
+                .catch((err) => alert("Security Wall Failed: " + err.message));
           });
       }
 
-      // Handle Payment Processing Form
       const payForm = document.getElementById('payment-form');
       if(payForm) {
           payForm.addEventListener('submit', (e) => {
               e.preventDefault();
-              alert(`Payment of $${window.globalCart.price} secure and complete! Thank you for choosing SpecAI.`);
+              alert(`Order Authorized! Card processed for $${window.globalCart.price}.`);
               window.globalCart = { items: [], price: 0 };
               document.getElementById('cart-count').innerText = 0;
               document.getElementById('checkout-section').classList.add('hidden-section');

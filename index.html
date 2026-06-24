@@ -3,51 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>चश्मा सेवा - चश्मे की देखभाल और मरम्मत</title>
+    <title>SpecAI - Precision Meets Personality</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
-        <h1>चश्मा सेवा</h1>
-        <p>आपके चश्मे को दें नया जीवन!</p>
+        <h1>SpecAI</h1>
+        <p>Where Precision Meets Personality.</p>
     </header>
+
     <main>
         <section class="upload-section">
-            <h2>चश्मे की स्थिति अपलोड करें</h2>
+            <h2>स्मार्ट विज़न विश्लेषण</h2>
             <form id="upload-form">
-                <label for="glasses-image">तस्वीर अपलोड करें:</label>
+                <label for="glasses-image">अपने चश्मे की स्थिति की तस्वीर अपलोड करें:</label>
                 <input type="file" id="glasses-image" accept="image/*" required>
-                <button type="submit">विश्लेषण करें</button>
+                <button type="submit">AI विश्लेषण शुरू करें</button>
             </form>
         </section>
+
         <section class="appointment-section">
-            <h2>अपॉइंटमेंट बुक करें</h2>
-            <button id="book-btn">अभी बुक करें</button>
+            <h2>एक्सपर्ट अपॉइंटमेंट</h2>
+            <p style="color: #a4b3c6; margin-bottom: 20px; font-size: 1.1rem;">स्टाइल गाइडेंस और सटीक आई-टेस्ट के लिए अपना स्लॉट सुरक्षित करें।</p>
+            <button id="book-btn">अभी स्लॉट बुक करें</button>
         </section>
         
         <section class="signup-section">
-            <h2>साइन अप करें</h2>
+            <h2>SpecAI क्लब में शामिल हों</h2>
             <form id="signup-form">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit">Sign Up</button>
+                <input type="email" id="email" placeholder="आपका ईमेल पता" required>
+                <input type="password" id="password" placeholder="एक सुरक्षित पासवर्ड बनाएं" required>
+                <button type="submit">साइन अप करें</button>
             </form>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 चश्मा सेवा</p>
+        <p>&copy; 2026 SpecAI. Elevating Vision & Style.</p>
     </footer>
 
     <script type="module">
-      // 1. Firebase और Firestore के आवश्यक फंक्शन्स इम्पोर्ट करें
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
       import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-      // Firestore इम्पोर्ट किया
       import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js"; 
 
-      // आपका Firebase कॉन्फ़िगरेशन
       const firebaseConfig = {
         apiKey: "AIzaSyBPUI4VCU-CZ58DsEwxBW9oi3qzVXT2bqs",
         authDomain: "eyewear-support.firebaseapp.com",
@@ -58,37 +59,34 @@
         measurementId: "G-W5LM98Q90N"
       };
 
-      // 2. Firebase इनिशियलाइज़ करें
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
       const auth = getAuth(app); 
-      const db = getFirestore(app); // Firestore को चालू किया
+      const db = getFirestore(app);
 
-      // 3. अपॉइंटमेंट बुक करने का लॉजिक (जैसा आपने तय किया था)
+      // Book Appointment Logic
       const bookBtn = document.getElementById('book-btn');
       if (bookBtn) {
           bookBtn.addEventListener('click', async () => {
               try {
-                  // आपने कहा था: कलेक्शन = appointments, ID = ग्राहक का नाम, फ़ील्ड = customerName और appointmentLetter
                   const customerName = "राहुल शर्मा"; 
-                  const appointmentLetter = "यह आपका अपॉइंटमेंट कन्फर्मेशन लेटर है।";
+                  const appointmentLetter = "यह आपका SpecAI VIP अपॉइंटमेंट कन्फर्मेशन लेटर है।";
 
-                  // Firestore में डेटा सेव करना (ID को 'customerName' यानी राहुल शर्मा रखा है)
                   await setDoc(doc(db, "appointments", customerName), {
                       customerName: customerName,
                       appointmentLetter: appointmentLetter
                   });
 
-                  alert("अपॉइंटमेंट सफलतापूर्वक बुक हो गया है और Firestore में सेव हो गया है!");
-                  console.log("Data saved successfully!");
+                  alert("SpecAI VIP अपॉइंटमेंट सफलतापूर्वक बुक हो गया है!");
+                  console.log("Data saved to Firestore!");
               } catch (error) {
                   console.error("Error booking appointment: ", error);
-                  alert("गड़बड़ हुई: " + error.message);
+                  alert("त्रुटि: " + error.message);
               }
           });
       }
 
-      // 4. साइन-अप फॉर्म का लॉजिक
+      // Signup Logic
       const signupForm = document.getElementById('signup-form');
       if (signupForm) {
           signupForm.addEventListener('submit', (e) => {
@@ -99,7 +97,7 @@
             createUserWithEmailAndPassword(auth, email, password)
               .then((cred) => {
                 console.log(cred.user);
-                alert('Sign up successful!');
+                alert('SpecAI अकाउंट सफलतापूर्वक बन गया है!');
               })
               .catch((error) => {
                 console.error(error.message);

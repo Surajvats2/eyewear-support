@@ -22,7 +22,7 @@
         </section>
         <section class="appointment-section">
             <h2>अपॉइंटमेंट बुक करें</h2>
-            <button onclick="bookAppointment()">अभी बुक करें</button>
+            <button id="book-btn">अभी बुक करें</button>
         </section>
         
         <section class="signup-section">
@@ -40,10 +40,12 @@
     </footer>
 
     <script type="module">
-      // 1. आवश्यक फंक्शन्स इम्पोर्ट करें (Auth भी शामिल किया है)
+      // 1. Firebase और Firestore के आवश्यक फंक्शन्स इम्पोर्ट करें
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
       import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+      // Firestore इम्पोर्ट किया
+      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js"; 
 
       // आपका Firebase कॉन्फ़िगरेशन
       const firebaseConfig = {
@@ -59,9 +61,34 @@
       // 2. Firebase इनिशियलाइज़ करें
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
-      const auth = getAuth(app); // नया तरीका
+      const auth = getAuth(app); 
+      const db = getFirestore(app); // Firestore को चालू किया
 
-      // 3. साइन-अप फॉर्म का लॉजिक (अब यह स्क्रिप्ट के अंदर है)
+      // 3. अपॉइंटमेंट बुक करने का लॉजिक (जैसा आपने तय किया था)
+      const bookBtn = document.getElementById('book-btn');
+      if (bookBtn) {
+          bookBtn.addEventListener('click', async () => {
+              try {
+                  // आपने कहा था: कलेक्शन = appointments, ID = ग्राहक का नाम, फ़ील्ड = customerName और appointmentLetter
+                  const customerName = "राहुल शर्मा"; 
+                  const appointmentLetter = "यह आपका अपॉइंटमेंट कन्फर्मेशन लेटर है।";
+
+                  // Firestore में डेटा सेव करना (ID को 'customerName' यानी राहुल शर्मा रखा है)
+                  await setDoc(doc(db, "appointments", customerName), {
+                      customerName: customerName,
+                      appointmentLetter: appointmentLetter
+                  });
+
+                  alert("अपॉइंटमेंट सफलतापूर्वक बुक हो गया है और Firestore में सेव हो गया है!");
+                  console.log("Data saved successfully!");
+              } catch (error) {
+                  console.error("Error booking appointment: ", error);
+                  alert("गड़बड़ हुई: " + error.message);
+              }
+          });
+      }
+
+      // 4. साइन-अप फॉर्म का लॉजिक
       const signupForm = document.getElementById('signup-form');
       if (signupForm) {
           signupForm.addEventListener('submit', (e) => {
@@ -69,7 +96,6 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // नए फ़ायरबेस वर्ज़न के हिसाब से यूज़र बनाना
             createUserWithEmailAndPassword(auth, email, password)
               .then((cred) => {
                 console.log(cred.user);
@@ -81,5 +107,6 @@
               });
           });
       }
-    </script> </body>
+    </script> 
+</body>
 </html>

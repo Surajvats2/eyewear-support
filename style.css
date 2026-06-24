@@ -1,151 +1,179 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Google Fonts से Modern & Editorial Fonts इम्पोर्ट किए */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Syne:wght@700;800&display=swap');
+
+:root {
+    --bg-color: #0b0c10;
+    --surface-color: #1f2833;
+    --accent-color: #66fcf1; /* Neon/Tech Cyan */
+    --text-main: #ffffff;
+    --text-muted: #c5a059; /* Luxury Gold Accent */
+    --text-secondary: #a4b3c6;
+    --font-heading: 'Syne', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+* {
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-    scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 15px 50px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-.nav-links li a:hover {
-    color: #007bff;
-}
-
-.hero {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1574258495973-f010dfcb5371') no-repeat center center/cover;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+/* Header & Navigation */
+header {
     text-align: center;
-    margin-top: 60px;
+    padding: 80px 20px;
+    background: linear-gradient(180deg, rgba(102,252,241,0.1) 0%, rgba(11,12,16,1) 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.hero-content h1 {
-    font-size: 3rem;
+header h1 {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    background: linear-gradient(45deg, #fff, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 10px;
 }
 
-.hero-content p {
+header p {
     font-size: 1.2rem;
-    margin-bottom: 25px;
+    color: var(--text-muted);
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 600;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
+/* Main Layout Grid */
 main {
-    padding-top: 20px;
-}
-
-section {
-    padding: 80px 20px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
 }
 
-.about-section {
-    background-color: #fff;
-    text-align: center;
-}
-
-.services-container {
-    display: flex;
-    gap: 30px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 40px;
-}
-
-.service-card {
-    background: #fff;
+/* Section Common Styling */
+section {
+    background: var(--surface-color);
     padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    flex: 1;
-    min-width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.service-card:hover {
+section:hover {
     transform: translateY(-5px);
+    border-color: rgba(102,252,241,0.2);
 }
 
-.service-card i {
-    font-size: 3rem;
-    color: #007bff;
-    margin-bottom: 20px;
+section h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block;
 }
 
-.btn-secondary {
-    background-color: #28a745;
+section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 2px;
+}
+
+/* Forms & Inputs (Sleek Tech Look) */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+input[type="file"], input[type="email"], input[type="password"] {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    border-radius: 12px;
     color: #fff;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(102,252,241,0.1);
+}
+
+/* Buttons (Luxury Conversion Ready) */
+button {
+    background: var(--text-main);
+    color: var(--bg-color);
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 16px 32px;
+    font-family: var(--font-body);
+    font-size: 1rem;
     font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+button:hover {
+    background: var(--accent-color);
+    box-shadow: 0 8px 25px rgba(102,252,241,0.3);
+    transform: translateY(-2px);
+}
+
+/* Specific Sections Customization */
+.appointment-section {
+    text-align: center;
+    background: linear-gradient(135deg, #1f2833 0%, #0f141c 100%);
+}
+
+.appointment-section button {
     margin-top: 15px;
-    transition: background-color 0.3s;
+    background: var(--accent-color);
+    color: var(--bg-color);
 }
 
-.btn-secondary:hover {
-    background-color: #218838;
+.appointment-section button:hover {
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(255,255,255,0.2);
 }
 
-.contact-section {
-    background-color: #fff;
-    text-align: center;
-}
-
+/* Footer */
 footer {
-    background-color: #333;
-    color: #fff;
     text-align: center;
-    padding: 20px 0;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
 }

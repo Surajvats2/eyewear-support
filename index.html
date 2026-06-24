@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>चश्मा सेवा - चश्मे की देखभाल और मरम्मत</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>चश्मा सेवा</h1>
+        <p>आपके चश्मे को दें नया जीवन!</p>
+    </header>
+    <main>
+        <section class="upload-section">
+            <h2>चश्मे की स्थिति अपलोड करें</h2>
+            <form id="upload-form">
+                <label for="glasses-image">तस्वीर अपलोड करें:</label>
+                <input type="file" id="glasses-image" accept="image/*" required>
+                <button type="submit">विश्लेषण करें</button>
+            </form>
+        </section>
+        <section class="appointment-section">
+            <h2>अपॉइंटमेंट बुक करें</h2>
+            <button onclick="bookAppointment()">अभी बुक करें</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 चश्मा सेवा</p>
+    </footer>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,8 @@
 </head>
 <body>
 
-    <div class="floating-cart-status">
-        🛒 Cart: <span id="cart-count">0</span> Item(s)
-    </div>
+    <div class="auth-status-bar" id="auth-status">Status: Guest User</div>
+    <div class="floating-cart-status">🛒 Cart: <span id="cart-count">0</span> Item(s)</div>
 
     <header>
         <h1>SpecAI</h1>
@@ -19,106 +18,98 @@
 
     <main>
         
-        <section class="products-section">
-            <h2>कलेक्शन खोजें (Discover Best Sellers)</h2>
-            <p style="color: #a4b3c6;">Sleek functionality meets high-end luxury eyewear.</p>
+        <section id="catalog-section">
+            <h2>Discover Best Sellers</h2>
+            <p style="color: #a4b3c6; margin-bottom: 20px;">Sleek functionality meets high-end luxury eyewear.</p>
             
             <div class="product-grid">
                 <div class="product-card">
                     <div class="tag">TRENDING</div>
-                    <div class="product-img-placeholder">🕶️ Aviator X</div>
-                    <div class="product-info">
-                        <h3>SpecAI Aviator X</h3>
-                        <p class="price">₹3,499</p>
-                        <button onclick="addToCart('SpecAI Aviator X', 3499)">Add To Cart</button>
-                    </div>
+                    <div class="product-img-placeholder">🕶️</div>
+                    <h3>SpecAI Aviator X</h3>
+                    <p class="price">$149</p>
+                    <button onclick="handleAddToCart('SpecAI Aviator X', 149)">Add To Cart</button>
                 </div>
 
                 <div class="product-card">
-                    <div class="tag" style="background: var(--text-muted); color: #000;">PREMIUM</div>
-                    <div class="product-img-placeholder">👓 Matte Round</div>
-                    <div class="product-info">
-                        <h3>SpecAI Matte Round</h3>
-                        <p class="price">₹2,999</p>
-                        <button onclick="addToCart('SpecAI Matte Round', 2999)">Add To Cart</button>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="tag">NEW TECH</div>
-                    <div class="product-img-placeholder">🕶️ Cyber Edge</div>
-                    <div class="product-info">
-                        <h3>SpecAI Cyber Edge</h3>
-                        <p class="price">₹4,199</p>
-                        <button onclick="addToCart('SpecAI Cyber Edge', 4199)">Add To Cart</button>
-                    </div>
+                    <div class="tag">PREMIUM</div>
+                    <div class="product-img-placeholder"> 👓</div>
+                    <h3>SpecAI Matte Round</h3>
+                    <p class="price">$129</p>
+                    <button onclick="handleAddToCart('SpecAI Matte Round', 129)">Add To Cart</button>
                 </div>
             </div>
         </section>
 
-        <section class="checkout-box" id="checkout-section">
-            <h2>सिक्योर पेमेंट गेटवे (Checkout Summary)</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;">Cart items secure gateway integration.</p>
+        <section id="auth-section" class="hidden-section" style="border: 1px solid var(--text-muted);">
+            <h2>Authentication Required</h2>
+            <p style="color: #a4b3c6; margin-bottom: 20px;" id="auth-message">Please create an account or sign in to proceed with your action.</p>
             
-            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                <p>Selected Frame(s): <strong id="cart-items-list" style="color: var(--accent-color);">Empty</strong></p>
-                <p style="margin-top: 10px; font-size: 1.2rem;">Total Amount: <strong id="cart-total-price" style="color: var(--text-muted);">₹0</strong></p>
+            <form id="signup-form">
+                <label>Email Address:</label>
+                <input type="email" id="email" placeholder="enter your email" required>
+                
+                <label>Password:</label>
+                <input type="password" id="password" placeholder="enter password" required>
+                
+                <button type="submit" style="background: var(--accent-color); color: #000;">Authenticate & Continue</button>
+            </form>
+        </section>
+
+        <section id="appointment-section">
+            <h2>Smart Repair & Expert Appointment</h2>
+            <p style="color: #a4b3c6; margin-bottom: 20px;">Upload your damaged frame photo to book a VIP technical slot.</p>
+            
+            <form id="smart-booking-form">
+                <label>Your Full Name:</label>
+                <input type="text" id="customer-name" placeholder="Enter your full name" required>
+
+                <label>Select Damage Type:</label>
+                <select id="glasses-problem" required>
+                    <option value="" disabled selected>Choose your problem...</option>
+                    <option value="Cracked Lens">Lens is broken / Cracked Lens</option>
+                    <option value="Broken Frame">Frame is damaged / Broken Frame</option>
+                    <option value="Scratched Coating">Heavy scratches on lens surface</option>
+                </select>
+
+                <label>Upload Image of Damaged Glasses:</label>
+                <input type="file" id="glasses-image" accept="image/*" required>
+                
+                <button type="submit" style="background: var(--text-main); color: #000;">Book Slot With Image</button>
+            </form>
+        </section>
+
+        <section id="checkout-section" class="hidden-section" style="border: 2px solid var(--accent-color);">
+            <h2>Secure Payment Gateway</h2>
+            <p style="color: #a4b3c6; margin-bottom: 20px;">Complete your purchase securely.</p>
+            
+            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <p>Items: <strong id="cart-items-list" style="color: var(--accent-color);">None</strong></p>
+                <p style="margin-top: 10px; font-size: 1.2rem;">Total Amount: <strong id="cart-total-price" style="color: var(--text-muted);">$0</strong></p>
             </div>
 
             <form id="payment-form">
-                <label>कार्डधारक का नाम (Cardholder Name):</label>
+                <label>Cardholder Name:</label>
                 <input type="text" id="card-name" placeholder="John Doe" required>
 
-                <label>कार्ड नंबर (16-Digit Card Number):</label>
+                <label>Card Number:</label>
                 <input type="text" id="card-number" placeholder="4111 2222 3333 4444" maxlength="16" required>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div>
-                        <label>एक्सपायरी (MM/YY):</label>
+                        <label>Expiry Date (MM/YY):</label>
                         <input type="text" id="card-expiry" placeholder="12/29" maxlength="5" required>
                     </div>
                     <div>
-                        <label>सीवीवी (CVV):</label>
+                        <label>CVV:</label>
                         <input type="password" id="card-cvv" placeholder="***" maxlength="3" required>
                     </div>
                 </div>
 
-                <button type="submit" class="action-btn" style="margin-top: 10px;">सुरक्षित भुगतान करें (Pay Now)</button>
+                <button type="submit" style="background: var(--accent-color); color: #000; margin-top: 15px;">Authorize Secure Payment</button>
             </form>
         </section>
 
-        <section class="appointment-section">
-            <h2>स्मार्ट रिपेयर और एक्सपर्ट अपॉइंटमेंट</h2>
-            <p style="color: #a4b3c6; margin-bottom: 20px;">Apne chashme ki photo aur problem dalkar slot confirm karein.</p>
-            
-            <form id="smart-booking-form">
-                <label>आपका पूरा नाम (Your Name):</label>
-                <input type="text" id="customer-name" placeholder="Full name dalein" required>
-
-                <label>चश्मे की समस्या (Select Damage Type):</label>
-                <select id="glasses-problem" required>
-                    <option value="" disabled selected>Problem chunein...</option>
-                    <option value="Lens Tuta Hai">Lens tuta hua hai / Cracked Lens</option>
-                    <option value="Frame Broken">Frame toot gaya hai / Broken Frame</option>
-                    <option value="Lens Scratches">Lens par kaafi scratch hain</option>
-                    <option value="Other Issue">Kuch aur problem hai</option>
-                </select>
-
-                <label>क्षतिग्रस्त चश्मे की तस्वीर अपलोड करें (Upload Glass Condition Photo):</label>
-                <input type="file" id="glasses-image" accept="image/*" required>
-                
-                <button type="submit" class="action-btn" style="margin-top: 10px;">तस्वीर के साथ स्लॉट बुक करें</button>
-            </form>
-        </section>
-        
-        <section class="signup-section">
-            <h2>SpecAI क्लब में शामिल हों</h2>
-            <form id="signup-form">
-                <input type="email" id="email" placeholder="ईमेल पता" required>
-                <input type="password" id="password" placeholder="पासवर्ड" required>
-                <button type="submit">अकाउंट बनाएं</button>
-            </form>
-        </section>
     </main>
 
     <footer>
@@ -127,7 +118,7 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+      import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
       import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js"; 
 
       const firebaseConfig = {
@@ -143,84 +134,133 @@
       const auth = getAuth(app); 
       const db = getFirestore(app);
 
-      // 1. SMART APPOINTMENT LOGIC WITH DATA & FILE INFO SAVE
+      // Track current active state flow
+      let currentUser = null;
+      let pendingAction = null; // Can be 'checkout' or 'booking'
+
+      // Listen to Authentication States Live
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
+              currentUser = user;
+              document.getElementById('auth-status').innerText = `Status: Logged In (${user.email})`;
+              document.getElementById('auth-section').classList.add('hidden-section'); // Hide login box if logged in
+              
+              // If user logged in just now, trigger their pending flow
+              if (pendingAction === 'checkout') {
+                  showCheckoutGateway();
+              } else if (pendingAction === 'booking') {
+                  executeBookingPipeline();
+              }
+          } else {
+              currentUser = null;
+              document.getElementById('auth-status').innerText = "Status: Guest User";
+          }
+      });
+
+      // Handle Add to Cart & Checkout Flow Trigger
+      window.handleAddToCart = function(name, price) {
+          window.globalCart.items.push(name);
+          window.globalCart.price += price;
+          
+          document.getElementById('cart-count').innerText = window.globalCart.items.length;
+          document.getElementById('cart-items-list').innerText = window.globalCart.items.join(', ');
+          document.getElementById('cart-total-price').innerText = "$" + window.globalCart.price;
+
+          alert(`${name} added to cart! Proceeding to secure layout...`);
+
+          if (!currentUser) {
+              pendingAction = 'checkout';
+              document.getElementById('auth-message').innerText = "Please create an account or login to proceed to the Payment Gateway.";
+              document.getElementById('auth-section').classList.remove('hidden-section');
+              document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
+          } else {
+              showCheckoutGateway();
+          }
+      }
+
+      function showCheckoutGateway() {
+          pendingAction = null;
+          document.getElementById('checkout-section').classList.remove('hidden-section');
+          document.getElementById('checkout-section').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Handle Appointment Form Submit Trigger
       const bookingForm = document.getElementById('smart-booking-form');
       if (bookingForm) {
-          bookingForm.addEventListener('submit', async (e) => {
+          bookingForm.addEventListener('submit', (e) => {
               e.preventDefault();
-              try {
-                  const customerName = document.getElementById('customer-name').value;
-                  const selectedProblem = document.getElementById('glasses-problem').value;
-                  const imageFile = document.getElementById('glasses-image').files[0];
-
-                  const appointmentLetter = `SpecAI Tech-Support Appointment for ${customerName}. Reported Damage: ${selectedProblem}.`;
-
-                  await setDoc(doc(db, "appointments", customerName), {
-                      customerName: customerName,
-                      problemType: selectedProblem,
-                      photoFileName: imageFile ? imageFile.name : "None",
-                      appointmentLetter: appointmentLetter,
-                      timestamp: new Date().toISOString()
-                  });
-
-                  alert(`सफलता! ${customerName} आपकी समस्या (${selectedProblem}) और फोटो रिकॉर्ड के साथ अपॉइंटमेंट बुक हो गया है!`);
-                  bookingForm.reset();
-              } catch (error) {
-                  alert("त्रुटि: " + error.message);
+              if (!currentUser) {
+                  pendingAction = 'booking';
+                  document.getElementById('auth-message').innerText = "Authentication mandatory! Register an account first to submit damage images and secure an appointment.";
+                  document.getElementById('auth-section').classList.remove('hidden-section');
+                  document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
+              } else {
+                  executeBookingPipeline();
               }
           });
       }
 
-      // 2. PAYMENT SUBMIT LOGIC 
+      async function executeBookingPipeline() {
+          pendingAction = null;
+          try {
+              const customerName = document.getElementById('customer-name').value;
+              const selectedProblem = document.getElementById('glasses-problem').value;
+              const imageFile = document.getElementById('glasses-image').files[0];
+
+              if(!customerName || !selectedProblem) return;
+
+              const appointmentLetter = `SpecAI Verification Letter. Customer: ${customerName}. Damage Status: ${selectedProblem}.`;
+
+              // Save directly into your Firebase Firestore Database 
+              await setDoc(doc(db, "appointments", customerName), {
+                  customerName: customerName,
+                  problemType: selectedProblem,
+                  imageName: imageFile ? imageFile.name : "none",
+                  appointmentLetter: appointmentLetter,
+                  userEmail: currentUser.email,
+                  dateCreated: new Date().toISOString()
+              });
+
+              alert(`Success! Appointment registered under user account. Data pushed to Firestore.`);
+              bookingForm.reset();
+          } catch (error) {
+              alert("Database Error: " + error.message);
+          }
+      }
+
+      // Handle Secure Registration/Auth Form Submission
+      const signupForm = document.getElementById('signup-form');
+      if (signupForm) {
+          signupForm.addEventListener('submit', (e) => {
+              e.preventDefault();
+              const email = document.getElementById('email').value;
+              const password = document.getElementById('password').value;
+
+              createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Account successfully created and synchronized!");
+                    signupForm.reset();
+                })
+                .catch((err) => alert("Authentication failed: " + err.message));
+          });
+      }
+
+      // Handle Payment Processing Form
       const payForm = document.getElementById('payment-form');
       if(payForm) {
           payForm.addEventListener('submit', (e) => {
               e.preventDefault();
-              if(globalCart.price === 0) {
-                  alert("कृपया भुगतान करने से पहले कार्ट में कोई चश्मा जोड़ें!");
-                  return;
-              }
-              alert(`भुगतान सफल! ₹${globalCart.price} का ट्रांजैक्शन आपके ${document.getElementById('card-name').value} कार्ड से सुरक्षित रूप से प्रोसेस कर दिया गया है।`);
-              // Reset Cart After Success
-              globalCart.items = [];
-              globalCart.price = 0;
+              alert(`Payment of $${window.globalCart.price} secure and complete! Thank you for choosing SpecAI.`);
+              window.globalCart = { items: [], price: 0 };
               document.getElementById('cart-count').innerText = 0;
-              document.getElementById('cart-items-list').innerText = "Empty";
-              document.getElementById('cart-total-price').innerText = "₹0";
+              document.getElementById('checkout-section').classList.add('hidden-section');
               payForm.reset();
-          });
-      }
-
-      // 3. SECURE SIGNUP LOGIC
-      const signupForm = document.getElementById('signup-form');
-      if (signupForm) {
-          signupForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            createUserWithEmailAndPassword(auth, email, password)
-              .then(() => { alert('SpecAI क्लब में आपका स्वागत है! अकाउंट बन गया।'); signupForm.reset(); })
-              .catch((err) => alert('Error: ' + err.message));
           });
       }
     </script>
 
     <script>
-        let globalCart = { items: [], price: 0 };
-
-        function addToCart(itemName, itemPrice) {
-            globalCart.items.push(itemName);
-            globalCart.price += itemPrice;
-            
-            // Live Update Floating Counter
-            document.getElementById('cart-count').innerText = globalCart.items.length;
-            
-            // Live Update Payment Box Summary
-            document.getElementById('cart-items-list').innerText = globalCart.items.join(', ');
-            document.getElementById('cart-total-price').innerText = "₹" + globalCart.price;
-            
-            alert(`${itemName} कार्ट में जुड़ गया! पेमेंट गेटवे सेक्शन चेक करें।`);
-        }
+        window.globalCart = { items: [], price: 0 };
     </script>
 </body>
 </html>

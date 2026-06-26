@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# secrets — never commit your real .env, only .env.example
+.env
+
+# Firebase service account key — this is a master key to your whole
+# Firebase project. NEVER commit it.
+server/serviceAccountKey.json
+
+# the live database — fills up with real signups, orders, appointments.
+# only the seed file (data.seed.json) should be committed.
+server/data.json
+
+# uploaded "broken glasses" photos — these are user data, not code
+server/uploads/*
+!server/uploads/.gitkeep
+
+# OS / editor junk
+.DS_Store
+*.log

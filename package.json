@@ -1,0 +1,17 @@
+{
+  "name": "specai-store",
+  "version": "1.0.0",
+  "description": "SpecAI - eyewear storefront with cart, auth, UPI payments, and glasses-repair appointment booking",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^12.3.1"
+  }
+}

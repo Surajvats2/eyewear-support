@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Invoice</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  body { background: #f0f4ff; }
+
+  .page-wrap { max-width: 720px; margin: 40px auto; padding: 0 20px 60px; }
+
+  .top-actions { display: flex; gap: 12px; margin-bottom: 24px; justify-content: flex-end; }
+
+  /* ---- Invoice card ---- */
+  .invoice { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 24px rgba(12,20,48,.10); }
+
+  .inv-header { background: linear-gradient(135deg, #0c1430 0%, #1f3a7a 100%); color: #fff; padding: 36px 40px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; }
+  .inv-header .brand { font-family: var(--serif); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .inv-header .brand span { opacity: .55; font-size: 13px; font-weight: 400; display: block; margin-top: 4px; font-family: var(--sans); }
+  .inv-header .inv-meta { text-align: right; }
+  .inv-header .inv-meta h2 { margin: 0 0 6px; font-size: 22px; font-weight: 700; letter-spacing: 1px; opacity: .9; }
+  .inv-header .inv-meta p { margin: 2px 0; font-size: 13px; opacity: .7; }
+
+  .inv-body { padding: 36px 40px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  .info-block h4 { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .info-block p { margin: 3px 0; font-size: 14px; color: var(--ink); }
+  .info-block .val { font-weight: 600; }
+
+  /* Status badge */
+  .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+  .status-paid { background: #d1fae5; color: #065f46; }
+
+  /* Items table */
+  .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+  .inv-table thead tr { border-bottom: 2px solid #e8edf5; }
+  .inv-table thead th { padding: 10px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); text-align: left; }
+  .inv-table thead th:last-child { text-align: right; }
+  .inv-table tbody tr { border-bottom: 1px solid #f1f5fb; }
+  .inv-table tbody td { padding: 14px 12px; font-size: 14px; color: var(--ink); vertical-align: top; }
+  .inv-table tbody td:last-child { text-align: right; font-weight: 600; }
+  .inv-table tbody td .item-name { font-weight: 600; margin-bottom: 2px; }
+  .inv-table tbody td .item-sub { font-size: 12px; color: var(--muted); }
+
+  /* Totals */
+  .totals { margin-left: auto; width: 260px; }
+  .totals .row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px; border-bottom: 1px solid #f1f5fb; }
+  .totals .row.grand { border-bottom: none; border-top: 2px solid #e8edf5; margin-top: 4px; padding-top: 12px; font-size: 17px; font-weight: 700; color: var(--navy); }
+
+  /* Payment info */
+  .pay-info { background: #f7f9ff; border-radius: 12px; padding: 18px 20px; margin-top: 28px; display: flex; gap: 32px; flex-wrap: wrap; }
+  .pay-info .pi { }
+  .pay-info .pi label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
+  .pay-info .pi span { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+  .inv-footer { border-top: 1px solid #eef2fb; padding: 22px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: #fafbff; }
+  .inv-footer p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .inv-footer .thank { font-family: var(--serif); font-size: 15px; color: var(--navy); font-weight: 600; }
+
+  /* Print styles */
+  @media print {
+    body { background: #fff; }
+    .top-actions { display: none !important; }
+    header.site { display: none !important; }
+    .page-wrap { margin: 0; padding: 0; max-width: 100%; }
+    .invoice { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">✕ SpecAI.</a>
+    <nav class="navlinks"><a href="index.html">Back to Store</a></nav>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <div class="top-actions">
+    <button class="btn-outline" onclick="window.print()">🖨️ Print Invoice</button>
+    <button class="btn-dark" onclick="downloadPDF()">⬇️ Download PDF</button>
+  </div>
+
+  <div class="invoice" id="invoice">
+    <!-- Header -->
+    <div class="inv-header">
+      <div class="brand">
+        ✕ SpecAI.
+        <span>Premium Eyewear Store</span>
+      </div>
+      <div class="inv-meta">
+        <h2>INVOICE</h2>
+        <p id="inv-number">INV---------</p>
+        <p id="inv-date">Date: --</p>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="inv-body">
+      <!-- Billed To + Order Info -->
+      <div class="two-col">
+        <div class="info-block">
+          <h4>Billed To</h4>
+          <p class="val" id="cust-name">—</p>
+          <p id="cust-email">—</p>
+        </div>
+        <div class="info-block" style="text-align:right;">
+          <h4>Order Details</h4>
+          <p>Order ID: <span class="val" id="order-id">—</span></p>
+          <p>Status: <span class="status-badge status-paid" id="order-status">✓ Paid</span></p>
+          <p style="margin-top:8px;">Payment: <span class="val" id="pay-method">UPI</span></p>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th style="width:50%">Item</th>
+            <th>Unit Price</th>
+            <th>Qty</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody id="inv-items">
+          <!-- filled by JS -->
+        </tbody>
+      </table>
+
+      <!-- Totals -->
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+        <div class="row"><span>GST (0%)</span><span>₹0</span></div>
+        <div class="row"><span>Shipping</span><span>FREE</span></div>
+        <div class="row grand"><span>Total Paid</span><span id="grand-total">₹0</span></div>
+      </div>
+
+      <!-- Payment Info -->
+      <div class="pay-info">
+        <div class="pi">
+          <label>Transaction / UTR</label>
+          <span id="utr-no">—</span>
+        </div>
+        <div class="pi">
+          <label>Payment Date</label>
+          <span id="paid-date">—</span>
+        </div>
+        <div class="pi">
+          <label>Payment Method</label>
+          <span>UPI</span>
+        </div>
+        <div class="pi">
+          <label>Currency</label>
+          <span>INR ₹</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="inv-footer">
+      <p class="thank">Thank you for shopping with SpecAI! 🙏</p>
+      <p>For support: support@specai.store</p>
+    </div>
+  </div>
+</div>
+
+<!-- html2pdf for PDF download -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  function fmt(date) {
+    return new Date(date).toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+  }
+
+  async function loadInvoice() {
+    const p = new URLSearchParams(location.search);
+    const orderId = p.get('orderId');
+    if (!orderId) { document.getElementById('invoice').innerHTML = '<p style="padding:40px;text-align:center;color:red;">Invalid invoice link.</p>'; return; }
+
+    try {
+      const { orders } = await apiFetch('/api/orders');
+      const order = orders.find(o => o.id === orderId);
+      if (!order) throw new Error('Order not found');
+
+      const user = Auth.currentUser();
+
+      // Invoice number
+      document.getElementById('inv-number').textContent = 'INV-' + order.id.slice(0,8).toUpperCase();
+      document.getElementById('inv-date').textContent = 'Date: ' + fmt(order.paidAt || order.createdAt);
+
+      // Customer
+      document.getElementById('cust-name').textContent = user?.displayName || 'Customer';
+      document.getElementById('cust-email').textContent = user?.email || '';
+
+      // Order
+      document.getElementById('order-id').textContent = order.id.slice(0,8).toUpperCase();
+
+      // Items
+      document.getElementById('inv-items').innerHTML = order.items.map(item => `
+        <tr>
+          <td>
+            <div class="item-name">${item.name}</div>
+            <div class="item-sub">Eyewear</div>
+          </td>
+          <td>₹${item.price}</td>
+          <td>${item.qty}</td>
+          <td>₹${item.price * item.qty}</td>
+        </tr>
+      `).join('');
+
+      // Totals
+      document.getElementById('subtotal').textContent = '₹' + order.amount;
+      document.getElementById('grand-total').textContent = '₹' + order.amount;
+
+      // Payment info
+      document.getElementById('utr-no').textContent = order.paymentId || '—';
+      document.getElementById('paid-date').textContent = fmt(order.paidAt || order.createdAt);
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function downloadPDF() {
+    const btn = document.querySelectorAll('.top-actions button');
+    btn.forEach(b => b.style.display = 'none');
+
+    const orderId = new URLSearchParams(location.search).get('orderId') || 'order';
+    html2pdf().set({
+      margin: 0,
+      filename: `SpecAI-Invoice-${orderId.slice(0,8).toUpperCase()}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).from(document.getElementById('invoice')).save().then(() => {
+      btn.forEach(b => b.style.display = '');
+    });
+  }
+
+  Auth.ready().then(() => loadInvoice());
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "users": [],
+  "products": [
+    {
+      "id": "p1",
+      "name": "Italian Acetate",
+      "price": 179,
+      "tag": "3x Style",
+      "image": "https://images.pexels.com/photos/947885/pexels-photo-947885.jpeg?auto=compress&cs=tinysrgb&w=500",
+      "stock": 24
+    },
+    {
+      "id": "p2",
+      "name": "VERA — Soft Cat-eye",
+      "price": 199,
+      "tag": "2x Style",
+      "image": "https://images.pexels.com/photos/2589451/pexels-photo-2589451.jpeg?auto=compress&cs=tinysrgb&w=500",
+      "stock": 18
+    },
+    {
+      "id": "p3",
+      "name": "ROVE — Round Minimal",
+      "price": 185,
+      "tag": "3x Style",
+      "image": "https://images.pexels.com/photos/343720/pexels-photo-343720.jpeg?auto=compress&cs=tinysrgb&w=500",
+      "stock": 30
+    }
+  ],
+  "orders": [],
+  "appointments": []
+}

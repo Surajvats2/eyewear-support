@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Fix Your Glasses</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  .appt-wrap{max-width:560px;margin:50px auto;padding:0 20px;}
+  .step{padding:26px;margin-bottom:20px;}
+  .step h2{font-family:var(--serif);font-size:22px;margin:0 0 6px;color:var(--navy);}
+  .step .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px;}
+  .upload-box{
+    border:2px dashed var(--line);border-radius:14px;padding:28px;text-align:center;cursor:pointer;
+  }
+  .upload-box img{max-height:160px;margin:0 auto 10px;border-radius:10px;}
+  .choice-row{display:flex;gap:12px;margin-bottom:16px;}
+  .choice-row button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;}
+  .choice-row button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .detect-result{background:var(--sky-100);border-radius:10px;padding:14px;font-size:14px;margin-top:14px;}
+  .detect-result b{color:var(--navy);}
+  .slot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
+  .slot-grid button{padding:10px 4px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:12.5px;}
+  .slot-grid button.active{background:var(--blue-500);color:#fff;border-color:var(--blue-500);}
+  .confirm-box{text-align:center;padding:36px 20px;}
+  .confirm-box .check{width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">✕ SpecAI.</a>
+    <nav class="navlinks"><a href="index.html">Back to store</a></nav>
+    <div class="nav-right"><span id="auth-slot"></span></div>
+  </div>
+</header>
+
+<div class="wrap appt-wrap">
+
+  <div class="card step">
+    <h2>Fix Your Glasses</h2>
+    <div class="sub">Upload a photo of the problem to get started.</div>
+    <div class="upload-box" id="upload-box" onclick="document.getElementById('photo-input').click()">
+      <div id="upload-placeholder">📷<br><span class="muted">Click to upload a photo</span></div>
+      <img id="preview-img" class="hidden">
+    </div>
+    <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="onPhotoChosen(event)">
+  </div>
+
+  <div class="card step hidden" id="problem-step">
+    <h2>What's wrong?</h2>
+    <div class="sub">Describe it yourself, or let our AI take a guess from your photo.</div>
+    <div class="choice-row">
+      <button id="btn-manual" class="active" onclick="setMode('manual')">✍ I'll describe it</button>
+      <button id="btn-ai" onclick="setMode('ai')">✨ AI Detect Problem</button>
+    </div>
+
+    <div id="manual-area">
+      <textarea id="problem-text" rows="3" placeholder="e.g. The left lens is cracked and the hinge is loose"></textarea>
+    </div>
+
+    <div id="ai-area" class="hidden">
+      <button class="btn-outline" style="width:100%;" id="detect-btn" onclick="runDetect()">Run AI Detection →</button>
+      <div id="detect-result"></div>
+    </div>
+  </div>
+
+  <div class="card step hidden" id="slot-step">
+    <h2>Pick a date &amp; time</h2>
+    <div class="sub">In-store repair appointment.</div>
+    <div class="field"><label>Date</label><input type="date" id="appt-date"></div>
+    <label>Time slot</label>
+    <div class="slot-grid" id="slot-grid"></div>
+  </div>
+
+  <button class="btn-dark" style="width:100%;justify-content:center;padding:15px;" id="submit-btn" disabled onclick="submitAppointment()">Confirm Appointment →</button>
+
+  <div class="card step hidden" id="confirm-step">
+    <div class="confirm-box">
+      <div class="check">✓</div>
+      <h3 style="font-family:var(--serif);margin:0 0 8px;">Appointment booked!</h3>
+      <p class="muted" id="confirm-detail"></p>
+      <a class="btn-dark" href="index.html" style="margin-top:14px;display:inline-flex;">Back to store</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  Auth.ready().then((user) => {
+    if (!user) location.href = "account.html?redirect=appointment.html";
+  });
+
+  let chosenFile = null;
+  let mode = "manual";
+  let detectedIssue = null;
+  let chosenTime = null;
+
+  const SLOTS = ["10:00 AM","11:30 AM","1:00 PM","2:30 PM","4:00 PM","5:30 PM"];
+  document.getElementById("slot-grid").innerHTML = SLOTS.map(s => `<button onclick="pickSlot(this,'${s}')">${s}</button>`).join("");
+
+  function onPhotoChosen(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    chosenFile = file;
+    const img = document.getElementById("preview-img");
+    img.src = URL.createObjectURL(file);
+    img.classList.remove("hidden");
+    document.getElementById("upload-placeholder").classList.add("hidden");
+    document.getElementById("problem-step").classList.remove("hidden");
+    document.getElementById("slot-step").classList.remove("hidden");
+    checkReady();
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById("btn-manual").classList.toggle("active", m === "manual");
+    document.getElementById("btn-ai").classList.toggle("active", m === "ai");
+    document.getElementById("manual-area").classList.toggle("hidden", m !== "manual");
+    document.getElementById("ai-area").classList.toggle("hidden", m !== "ai");
+    checkReady();
+  }
+
+  async function runDetect() {
+    const btn = document.getElementById("detect-btn");
+    const resultBox = document.getElementById("detect-result");
+    btn.disabled = true;
+    btn.textContent = "Analyzing photo…";
+    resultBox.innerHTML = "";
+    try {
+      const fd = new FormData();
+      fd.append("photo", chosenFile);
+      const data = await apiFetch("/api/appointments/detect", { method: "POST", body: fd });
+      detectedIssue = data.detectedIssue;
+      resultBox.innerHTML = `<div class="detect-result">
+        Likely issue: <b>${data.detectedIssue}</b> (${Math.round(data.confidence*100)}% confidence)<br>
+        <span class="muted" style="font-size:12px;">${data.note}</span>
+      </div>`;
+    } catch (err) {
+      resultBox.innerHTML = `<p class="error-text">${err.message || "Detection failed."}</p>`;
+    }
+    btn.disabled = false;
+    btn.textContent = "Run AI Detection →";
+    checkReady();
+  }
+
+  function pickSlot(el, time) {
+    document.querySelectorAll("#slot-grid button").forEach(b => b.classList.remove("active"));
+    el.classList.add("active");
+    chosenTime = time;
+    checkReady();
+  }
+
+  function checkReady() {
+    const date = document.getElementById("appt-date")?.value;
+    const hasProblem = mode === "manual"
+      ? document.getElementById("problem-text").value.trim().length > 0
+      : !!detectedIssue;
+    document.getElementById("submit-btn").disabled = !(chosenFile && hasProblem && date && chosenTime);
+  }
+  document.addEventListener("input", checkReady);
+  document.getElementById("appt-date")?.addEventListener("change", checkReady);
+
+  async function submitAppointment() {
+    const fd = new FormData();
+    fd.append("photo", chosenFile);
+    fd.append("date", document.getElementById("appt-date").value);
+    fd.append("time", chosenTime);
+    if (mode === "manual") fd.append("description", document.getElementById("problem-text").value.trim());
+    if (mode === "ai" && detectedIssue) fd.append("detectedIssue", detectedIssue);
+
+    const btn = document.getElementById("submit-btn");
+    btn.disabled = true;
+    btn.textContent = "Booking…";
+
+    try {
+      const { appointment } = await apiFetch("/api/appointments", { method: "POST", body: fd });
+      document.querySelectorAll(".step").forEach(s => s.classList.add("hidden"));
+      btn.classList.add("hidden");
+      document.getElementById("confirm-step").classList.remove("hidden");
+      document.getElementById("confirm-detail").textContent =
+        `${appointment.date} at ${appointment.time} — ${appointment.detectedIssue || appointment.description}`;
+    } catch (err) {
+      showToast(err.message || "Could not book appointment.");
+      btn.disabled = false;
+      btn.textContent = "Confirm Appointment →";
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,263 +1,556 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpecAI — Optics Elevation</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Optics Elevation</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+/* ========== TOKENS ========== */
+:root {
+  --blue-bright: #1a6bff;
+  --bg: #dce8f7;
+}
+body { background: var(--bg); }
+
+/* ========== NAV ========== */
+header.site { background: var(--bg); padding-top: 0; border-bottom: none; }
+.nav { padding: 20px 0; }
+.nav .logo { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+.navlinks a { font-size: 14px; font-weight: 500; }
+.nav-cust {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid var(--navy); border-radius: 30px;
+  padding: 8px 16px; font-size: 13.5px; font-weight: 600; cursor: pointer; background: transparent;
+}
+
+/* ========== HERO ========== */
+.hero { padding: 10px 0 0; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+  min-height: 420px;
+}
+
+/* Left */
+.hero-left { padding: 10px 0 30px; }
+.eyebrow-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.9);
+  border-radius: 30px; padding: 6px 14px; font-size: 12px;
+  color: var(--muted); margin-bottom: 20px; backdrop-filter: blur(6px);
+}
+h1.display {
+  font-family: var(--serif); font-size: clamp(42px, 5.5vw, 68px);
+  line-height: .95; font-weight: 700; margin: 0 0 18px; color: var(--navy);
+  letter-spacing: -1px;
+}
+.hero-sub { font-size: 14px; color: var(--muted); max-width: 300px; line-height: 1.6; margin: 0 0 28px; }
+.hero-sub strong { color: var(--ink); }
+.hero-price { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+.hero-price b { color: var(--ink); }
+.btn-hero {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--navy); color: #fff; padding: 14px 26px;
+  border-radius: 30px; font-size: 14.5px; font-weight: 600; border: none;
+}
+.btn-hero span { background: rgba(255,255,255,.15); border-radius: 20px; padding: 2px 10px; font-size: 12px; }
+
+/* Centre portrait */
+.hero-portrait {
+  border-radius: 20px; overflow: hidden; height: 420px;
+  position: relative;
+}
+.hero-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+/* Right cards */
+.hero-right { display: flex; flex-direction: column; gap: 14px; }
+.mini-card {
+  background: var(--blue-bright); color: #fff;
+  border-radius: 16px; padding: 18px 20px;
+}
+.mini-card.white { background: #fff; color: var(--ink); }
+.mini-card .mc-label { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; opacity: .75; margin-bottom: 6px; }
+.mini-card h4 { margin: 0 0 6px; font-family: var(--serif); font-size: 16px; line-height: 1.3; }
+.mini-card p { margin: 0; font-size: 12.5px; opacity: .8; }
+.mini-card img.mc-img { width: 100%; border-radius: 10px; margin-top: 10px; object-fit: cover; height: 90px; }
+.tag-pill { display: inline-block; background: rgba(255,255,255,.2); border-radius: 20px; padding: 3px 10px; font-size: 11px; margin-top: 8px; }
+
+/* glasses strip */
+.glasses-strip {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 22px 0; border-top: 1px solid rgba(12,20,48,.1);
+  border-bottom: 1px solid rgba(12,20,48,.1); margin: 30px 0;
+}
+.glasses-strip img { height: 44px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,.12)); }
+.glasses-strip .sep { width: 1px; height: 28px; background: rgba(12,20,48,.15); }
+
+/* ========== FEATURES BANNER ========== */
+.feat-banner {
+  background: var(--white); border-radius: 20px;
+  padding: 30px 36px; margin: 10px 0 30px;
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.feat-banner .feat-text { flex: 1; min-width: 200px; }
+.feat-banner .feat-text h2 {
+  font-family: var(--serif); font-size: clamp(22px, 3vw, 30px);
+  margin: 0 0 10px; color: var(--navy); line-height: 1.2;
+}
+.feat-banner .feat-text p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.feat-banner .feat-img { flex: 0 0 auto; }
+.feat-banner .feat-img img { height: 120px; object-fit: contain; border-radius: 12px; }
+.feat-banner .feat-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .5px; color: var(--navy); text-decoration: underline; margin-top: 14px;
+}
+
+/* ========== BENTO GRID ========== */
+.section-label {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 40px 0 20px;
+}
+.section-label h2 { font-family: var(--serif); font-size: clamp(24px, 3.5vw, 36px); margin: 0; color: var(--navy); }
+.section-label .cust-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid var(--line); border-radius: 30px;
+  padding: 8px 16px; font-size: 13px; font-weight: 600; background: var(--white);
+}
+.lux-label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+
+.bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 14px; margin-bottom: 30px; }
+
+.bento-card { background: var(--white); border-radius: 18px; overflow: hidden; padding: 20px; position: relative; }
+.bento-card.blue { background: var(--blue-bright); color: #fff; }
+.bento-card.dark { background: var(--navy); color: #fff; }
+.bento-card.span2 { grid-column: span 2; }
+
+.bento-card h3 { font-family: var(--serif); font-size: 18px; margin: 0 0 8px; line-height: 1.25; }
+.bento-card p { font-size: 12.5px; opacity: .75; margin: 0 0 12px; line-height: 1.5; }
+.bento-card .bc-tag { font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; opacity: .6; margin-bottom: 6px; }
+.bento-card img.bc-img { width: 100%; border-radius: 12px; object-fit: cover; margin-top: 10px; }
+.bento-card img.bc-img.tall { height: 140px; }
+.bento-card img.bc-img.short { height: 90px; }
+.bento-card .bc-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--navy); color: #fff; border: none;
+  border-radius: 20px; padding: 9px 18px; font-size: 12.5px; font-weight: 600; margin-top: 10px;
+}
+.bento-card.blue .bc-btn { background: #fff; color: var(--blue-bright); }
+.bento-card .corner-num {
+  position: absolute; bottom: 16px; right: 18px;
+  font-family: var(--serif); font-size: 36px; font-weight: 700; opacity: .12; line-height: 1;
+}
+.bento-portrait { width: 100%; height: 160px; object-fit: cover; object-position: top; border-radius: 12px; }
+.bento-icon { font-size: 28px; margin-bottom: 8px; }
+.row-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.15); border-radius: 20px; padding: 4px 10px;
+  font-size: 11px; font-weight: 600; margin-top: 8px;
+}
+
+/* ========== BEST SELLERS ========== */
+.shop-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 44px 0 20px; flex-wrap: wrap; gap: 14px;
+}
+.shop-head h2 { font-family: var(--serif); font-size: clamp(28px, 4vw, 40px); margin: 0; line-height: 1.1; }
+.filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.fp {
+  padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 500;
+  border: 1.5px solid var(--line); background: var(--white); cursor: pointer; transition: all .18s;
+}
+.fp.active, .fp:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.fp.blue-fp { background: var(--blue-bright); color: #fff; border-color: var(--blue-bright); }
+
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.product { padding: 22px; }
+.product .p-tag {
+  font-size: 11px; color: var(--muted); font-weight: 600;
+  border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 14px;
+  display: flex; justify-content: space-between;
+}
+.product .pic { height: 150px; display: flex; align-items: center; justify-content: center; background: var(--sky-100); border-radius: 12px; }
+.product .pic img { height: 100%; width: 100%; object-fit: contain; padding: 10px; }
+.product .meta { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; }
+.product .meta h6 { font-family: var(--serif); font-size: 16px; margin: 0 0 4px; }
+.product .meta .price { font-size: 15px; font-weight: 700; color: var(--navy); }
+.add {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--navy); color: #fff; border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: background .2s;
+}
+.add.active { background: var(--green); }
+
+/* ========== REPAIR BANNER ========== */
+.repair-section { margin: 50px 0 0; }
+.repair-banner {
+  background: linear-gradient(135deg, #0c1430 0%, #1a3a7a 100%);
+  border-radius: 20px; padding: 36px 40px; color: #fff;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+}
+.repair-banner h3 { font-family: var(--serif); font-size: clamp(20px,3vw,28px); margin: 0 0 8px; }
+.repair-banner p { margin: 0; opacity: .8; font-size: 14px; max-width: 400px; line-height: 1.6; }
+.repair-banner .btn-white { background: #fff; color: var(--navy); display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 30px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
+
+/* ========== FOOTER ========== */
+footer.main-footer {
+  background: var(--navy); color: rgba(255,255,255,.65);
+  padding: 56px 0 32px; margin-top: 60px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px;
+  padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.footer-brand .logo { color: #fff; font-size: 22px; margin-bottom: 14px; }
+.footer-brand p { font-size: 13px; line-height: 1.7; max-width: 220px; }
+.footer-brand .subscribe-row { display: flex; gap: 8px; margin-top: 16px; }
+.footer-brand .subscribe-row input {
+  flex: 1; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  color: #fff; border-radius: 30px; padding: 10px 16px; font-size: 13px;
+}
+.footer-brand .subscribe-row input::placeholder { color: rgba(255,255,255,.4); }
+.footer-brand .sub-btn {
+  background: var(--blue-bright); color: #fff; border: none; border-radius: 30px;
+  padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.footer-col h5 { color: #fff; font-size: 13px; font-weight: 700; margin: 0 0 14px; text-transform: uppercase; letter-spacing: .5px; }
+.footer-col a { display: block; font-size: 13px; margin-bottom: 9px; opacity: .65; }
+.footer-col a:hover { opacity: 1; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-size: 12px; flex-wrap: wrap; gap: 8px; }
+.footer-bottom .big-brand { font-family: var(--serif); font-size: 42px; font-weight: 700; color: rgba(255,255,255,.08); line-height: 1; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr 1fr; }
+  .hero-right { display: none; }
+  .bento { grid-template-columns: repeat(2,1fr); }
+  .bento-card.span2 { grid-column: span 1; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-portrait { height: 300px; }
+  .product-grid { grid-template-columns: 1fr 1fr; }
+  .bento { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
-    <div class="auth-status-bar" id="auth-status">Guest Access</div>
-    <div class="floating-cart-status">Bag: <span id="cart-count">0</span> Product(s)</div>
+<!-- ===== HEADER ===== -->
+<header class="site">
+  <div class="wrap nav">
+    <div class="logo">✕ SpecAI.</div>
+    <nav class="navlinks">
+      <a href="#shop">Shop</a>
+      <a href="#">Services</a>
+      <a href="#">Eyewear ▾</a>
+      <a href="#">Glasses</a>
+      <a href="#">About</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-slot"></span>
+      <button class="nav-cust">Customize +</button>
+      <button class="icon-btn" onclick="openCart()" aria-label="Cart">🛍<span class="badge cart-badge" style="display:none">0</span></button>
+    </div>
+  </div>
+</header>
 
-    <header>
-        <div class="brand-logo">× SpecAI.</div>
-        <h1>Optics<br>Elevation</h1>
-        <p>Blends cutting-edge tech with timeless aesthetics to deliver eyewear that elevates your style experience.</p>
-    </header>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
 
-    <main>
-        
-        <section class="products-section">
-            <h2>Best-selling Glasses</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 30px;">A unique blend of elegance, cutting-edge tech, and comfort.</p>
-            
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="tag">ITALIAN ACETATE</div>
-                    <div class="product-img-placeholder">🕶️</div>
-                    <h3>Italian Acetate Core</h3>
-                    <p class="price">$179</p>
-                    <button onclick="handleAddToCart('Italian Acetate Core', 179)">Add To Bag</button>
-                </div>
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="eyebrow-pill">👁️ Eye health at 30's</div>
+      <h1 class="display">OPTICS<br>ELEVATION</h1>
+      <p class="hero-sub">Not just eyewear — a unique <strong>blend of elegance</strong>, cutting-edge tech and affordability</p>
+      <p class="hero-price">Starts From <b>₹799</b></p>
+      <button class="btn-hero" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+        Discover Glasses <span>→</span>
+      </button>
+    </div>
 
-                <div class="product-card">
-                    <div class="tag">SOFT CAT-EYE</div>
-                    <div class="product-img-placeholder">👓</div>
-                    <h3>VERA – Soft Cat-eye</h3>
-                    <p class="price">$199</p>
-                    <button onclick="handleAddToCart('VERA – Soft Cat-eye', 199)">Add To Bag</button>
-                </div>
+    <!-- CENTRE PORTRAIT -->
+    <div class="hero-portrait">
+      <img src="https://images.pexels.com/photos/31719230/pexels-photo-31719230.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Model wearing glasses">
+    </div>
 
-                <div class="product-card">
-                    <div class="tag">MINIMALIST</div>
-                    <div class="product-img-placeholder">🕶️</div>
-                    <h3>ROVE – Round Minimal</h3>
-                    <p class="price">$185</p>
-                    <button onclick="handleAddToCart('ROVE – Round Minimal', 185)">Add To Bag</button>
-                </div>
-            </div>
-        </section>
+    <!-- RIGHT MINI CARDS -->
+    <div class="hero-right">
+      <div class="mini-card white" style="display:flex;gap:12px;align-items:center;">
+        <div style="flex:1;">
+          <div class="mc-label">The Ultimate Duo</div>
+          <h4>Clarity &amp; Confidence</h4>
+          <p>Skin-friendly materials</p>
+        </div>
+        <div style="font-size:36px;">🕶️</div>
+      </div>
+      <div class="mini-card blue">
+        <div class="mc-label">Eye Protecting</div>
+        <h4>Tools</h4>
+        <p>Blue light &amp; UV filtering lens</p>
+        <img class="mc-img" src="https://images.pexels.com/photos/5472308/pexels-photo-5472308.jpeg?auto=compress&cs=tinysrgb&w=400" alt="case">
+        <div class="tag-pill">PRECISION IN MOTION</div>
+      </div>
+    </div>
 
-        <section id="appointment-section">
-            <h2>Intelligent Style & Repair Comfort</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 25px;">Upload a crisp photo of your current damage or frame issue to book an expert digital slot.</p>
-            
-            <form id="smart-booking-form">
-                <label>Full Structural Name:</label>
-                <input type="text" id="customer-name" placeholder="E.g., Sarah Jenkins" required>
+  </div>
 
-                <label>Primary Damage Profile:</label>
-                <select id="glasses-problem" required>
-                    <option value="" disabled selected>Identify the framework issue...</option>
-                    <option value="Cracked Lens Structure">Cracked Lens Structure</option>
-                    <option value="Damaged Bridge / Hinge">Damaged Bridge or Broken Frame Hinge</option>
-                    <option value="Heavy Surface Scratches">Heavy Scratches / Antireflective Peeling</option>
-                </select>
+  <!-- Glasses Strip -->
+  <div class="wrap">
+    <div class="glasses-strip">
+      <img src="https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=200" alt="glasses 1">
+      <div class="sep"></div>
+      <img src="https://images.pexels.com/photos/2148605/pexels-photo-2148605.jpeg?auto=compress&cs=tinysrgb&w=200" alt="glasses 2">
+      <div class="sep"></div>
+      <img src="https://images.pexels.com/photos/701877/pexels-photo-701877.jpeg?auto=compress&cs=tinysrgb&w=200" alt="glasses 3">
+    </div>
+  </div>
+</section>
 
-                <label>Upload High-Resolution Condition Image:</label>
-                <input type="file" id="glasses-image" accept="image/*" required>
-                
-                <button type="submit" style="margin-top: 10px;">Register Technical Slot</button>
-            </form>
-        </section>
+<!-- ===== FEATURES BANNER ===== -->
+<section style="padding: 0 0 10px;">
+  <div class="wrap">
+    <div class="feat-banner">
+      <div style="font-size:48px;">👓</div>
+      <div class="feat-text">
+        <h2>Transforming vision with fast-forward eyewear that defines your style.</h2>
+        <p>Every frame we design combines precision craftsmanship with effortless style — built for the modern world.</p>
+        <a class="feat-link" href="#shop">CHOICE LENS →</a>
+      </div>
+      <div class="feat-img">
+        <img src="https://images.pexels.com/photos/2148605/pexels-photo-2148605.jpeg?auto=compress&cs=tinysrgb&w=400" alt="round glasses">
+      </div>
+    </div>
+  </div>
+</section>
 
-        <section id="auth-section" class="hidden-section" style="border: 1px solid var(--accent-dark);">
-            <h2>Secure Identity Verification</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;" id="auth-message">Please synchronize a personal account to proceed to final checkouts or file uploads.</p>
-            
-            <form id="signup-form">
-                <label>Secure Email Address:</label>
-                <input type="email" id="email" placeholder="name@domain.com" required>
-                
-                <label>Create Account Password:</label>
-                <input type="password" id="password" placeholder="••••••••" required>
-                
-                <button type="submit">Verify & Continue</button>
-            </form>
-        </section>
+<!-- ===== INTELLIGENT COMFORT BENTO ===== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">
+      <h2>Intelligent style comfort</h2>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="cust-btn">Customize +</button>
+        <span class="lux-label">👁 Luxury in Every Look</span>
+      </div>
+    </div>
 
-        <section id="checkout-section" class="hidden-section">
-            <h2>Secure Order Authorization</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 25px;">Review details and submit digital payment.</p>
-            
-            <div style="background: #f8fafc; padding: 25px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
-                <p style="font-size: 0.9rem; color: var(--text-secondary);">Selected Artifacts:</p>
-                <p><strong id="cart-items-list" style="color: var(--accent-dark); font-size: 1.1rem;">None Selected</strong></p>
-                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);">Aggregate Value:</p>
-                <p><strong id="cart-total-price" style="color: var(--accent-dark); font-size: 1.6rem;">$0</strong></p>
-            </div>
+    <div class="bento">
 
-            <form id="payment-form">
-                <label>Authorized Cardholder:</label>
-                <input type="text" id="card-name" placeholder="Sarah Jenkins" required>
+      <!-- Card 1: Glasses Preview -->
+      <div class="bento-card">
+        <div class="bc-tag">New Feature</div>
+        <h3>Glasses Preview Mode</h3>
+        <p>Try frames virtually before you buy</p>
+        <img class="bc-img tall" src="https://images.pexels.com/photos/5472308/pexels-photo-5472308.jpeg?auto=compress&cs=tinysrgb&w=400" alt="glasses preview">
+        <div style="margin-top:10px;font-size:12px;color:var(--muted);">Caring for your vision, one Test at a time</div>
+        <a href="appointment.html" style="display:inline-block;margin-top:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);text-decoration:underline;">GET TESTED →</a>
+      </div>
 
-                <label>16-Digit Card Number:</label>
-                <input type="text" id="card-number" placeholder="4111 5555 6666 7777" maxlength="16" required>
+      <!-- Card 2: Portrait -->
+      <div class="bento-card" style="padding:0;overflow:hidden;">
+        <img style="width:100%;height:100%;min-height:260px;object-fit:cover;object-position:top;" src="https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&w=400" alt="model">
+      </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div>
-                        <label>Validity (MM/YY):</label>
-                        <input type="text" id="card-expiry" placeholder="08/30" maxlength="5" required>
-                    </div>
-                    <div>
-                        <label>Secure CVV Code:</label>
-                        <input type="password" id="card-cvv" placeholder="•••" maxlength="3" required>
-                    </div>
-                </div>
+      <!-- Card 3: BLB -->
+      <div class="bento-card" style="background:var(--sky-100);">
+        <div class="bc-tag" style="display:flex;align-items:center;gap:6px;">🔵 BLB</div>
+        <h3>Anti-reflective</h3>
+        <p>Protect your eyes from digital strain</p>
+        <div style="background:#fff;border-radius:12px;padding:12px;margin-top:8px;font-size:13px;color:var(--navy);font-weight:600;">Blue light blocking lenses filter harmful screen rays</div>
+      </div>
 
-                <button type="submit" style="margin-top: 15px;">Process Global Secure Payment</button>
-            </form>
-        </section>
+      <!-- Card 4: Real-time blue -->
+      <div class="bento-card blue">
+        <div class="bc-tag" style="opacity:.8;">AI Powered</div>
+        <h3>Your look instantly with our real-time</h3>
+        <div class="row-badge">Eco-conscious materials</div>
+        <img class="bc-img short" src="https://images.pexels.com/photos/2269872/pexels-photo-2269872.jpeg?auto=compress&cs=tinysrgb&w=400" alt="model glasses" style="margin-top:14px;border-radius:10px;object-position:top;">
+      </div>
 
-    </main>
+      <!-- Card 5: Frame Designer -->
+      <div class="bento-card dark span2" style="display:flex;align-items:center;gap:20px;">
+        <div style="font-size:36px;">🕶️</div>
+        <div>
+          <div class="bc-tag" style="opacity:.6;">NEW FRAME</div>
+          <h3 style="font-size:16px;margin:0 0 6px;">STYLE DESIGNER</h3>
+          <p>Every frame we design combines precision craftsmanship with effortless style.</p>
+        </div>
+        <div class="corner-num">✦</div>
+      </div>
 
-    <footer>
-        <p>&copy; 2026 SpecAI Global. All Rights Reserved. Precision Engineering.</p>
-    </footer>
+      <!-- Card 6: Tailored Comfort -->
+      <div class="bento-card">
+        <h3>Tailored comfort for your eyes</h3>
+        <a href="#shop" style="display:inline-block;margin-top:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);text-decoration:underline;">UPGRADE VISION →</a>
+        <img class="bc-img tall" src="https://images.pexels.com/photos/1001473/pexels-photo-1001473.jpeg?auto=compress&cs=tinysrgb&w=400" alt="glasses">
+      </div>
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-      import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js"; 
+      <!-- Card 7: 4 Style -->
+      <div class="bento-card" style="background:var(--sky-100);position:relative;">
+        <img class="bento-portrait" src="https://images.pexels.com/photos/2269872/pexels-photo-2269872.jpeg?auto=compress&cs=tinysrgb&w=400" alt="model">
+        <div style="position:absolute;bottom:14px;left:14px;background:#fff;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;color:var(--navy);">
+          <span style="font-size:16px;font-family:var(--serif);">4</span> Style perfectly matched
+        </div>
+      </div>
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyBPUI4VCU-CZ58DsEwxBW9oi3qzVXT2bqs",
-        authDomain: "eyewear-support.firebaseapp.com",
-        projectId: "eyewear-support",
-        storageBucket: "eyewear-support.firebasestorage.app",
-        messagingSenderId: "1019699668530",
-        appId: "1:1019699668530:web:43426caf6f80c67e9bfe2b"
-      };
+      <!-- Card 8: Future -->
+      <div class="bento-card blue" style="position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;font-size:60px;opacity:.15;line-height:1;padding:8px;">🥽</div>
+        <div class="bc-tag">Vision Forward</div>
+        <h3 style="font-size:15px;">THE FUTURE LOOKS GOOD ON YOU</h3>
+        <button class="bc-btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
+      </div>
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app); 
-      const db = getFirestore(app);
+    </div>
+  </div>
+</section>
 
-      let currentUser = null;
-      let pendingAction = null; 
+<!-- ===== BEST SELLERS ===== -->
+<section id="shop">
+  <div class="wrap">
+    <div class="shop-head">
+      <div>
+        <h2>Best –<br>selling Glasses</h2>
+      </div>
+      <div>
+        <div class="filter-pills" style="margin-bottom:10px;">
+          <button class="fp blue-fp" onclick="filterProducts('all', this)">↗ All</button>
+          <button class="fp active" onclick="filterProducts('retro', this)">Retro Revival</button>
+          <button class="fp" onclick="filterProducts('classic', this)">Classic</button>
+        </div>
+        <div class="filter-pills">
+          <button class="fp" onclick="filterProducts('bluelight', this)">Blue Light</button>
+          <button class="fp" onclick="filterProducts('sunglass', this)">Sunglass</button>
+        </div>
+      </div>
+      <p class="muted" style="font-size:13.5px;max-width:200px;text-align:right;">A unique <strong>blend of elegance</strong>, cutting-edge tech and affordability</p>
+    </div>
 
-      onAuthStateChanged(auth, (user) => {
-          if (user) {
-              currentUser = user;
-              document.getElementById('auth-status').innerText = `Active Session: ${user.email}`;
-              document.getElementById('auth-section').classList.add('hidden-section');
-              
-              if (pendingAction === 'checkout') { showCheckoutGateway(); } 
-              else if (pendingAction === 'booking') { executeBookingPipeline(); }
-          } else {
-              currentUser = null;
-              document.getElementById('auth-status').innerText = "Guest Access";
-          }
-      });
+    <div class="product-grid" id="product-grid">
+      <p class="muted">Loading…</p>
+    </div>
+  </div>
+</section>
 
-      window.handleAddToCart = function(name, price) {
-          window.globalCart.items.push(name);
-          window.globalCart.price += price;
-          
-          document.getElementById('cart-count').innerText = window.globalCart.items.length;
-          document.getElementById('cart-items-list').innerText = window.globalCart.items.join(', ');
-          document.getElementById('cart-total-price').innerText = "$" + window.globalCart.price;
+<!-- ===== REPAIR BANNER ===== -->
+<section class="repair-section">
+  <div class="wrap">
+    <div class="repair-banner">
+      <div>
+        <h3>Broken frame? Cracked lens?</h3>
+        <p>Upload a photo, tell us (or let our AI detect) what's wrong, and book a repair slot in under a minute. Stories live behind every lens — we'll help yours continue.</p>
+      </div>
+      <a class="btn-white" href="appointment.html">Fix Your Glasses →</a>
+    </div>
+  </div>
+</section>
 
-          alert(`Added ${name} directly to bag.`);
+<!-- ===== FOOTER ===== -->
+<footer class="main-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">✕ SpecAI.</div>
+        <p>Your look instantly with our real-time eyewear experience.</p>
+        <div class="subscribe-row">
+          <input type="email" placeholder="Your e-mail">
+          <button class="sub-btn">Subscribe →</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a href="blog.html">Blog &amp; News</a>
+        <a href="insurance.html">Insurance Calculator</a>
+        <a href="help.html">Help Center</a>
+        <a href="glossary.html">Glossary of Terms</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="about.html">About Us</a>
+        <a href="about.html#why">Why Choose Us</a>
+        <a href="about.html#careers">Careers</a>
+        <a href="about.html#press">Press &amp; Media</a>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="appointment.html">Repair Glasses</a>
+        <a href="insurance.html">Eye Insurance</a>
+        <a href="insurance.html">Home Insurance</a>
+        <a href="appointment.html">Book Appointment</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact &amp; Support</h5>
+        <a href="tel:9334905548">📞 9334905548</a>
+        <a href="mailto:suraj8102564@gmail.com">✉️ suraj8102564@gmail.com</a>
+        <a href="#">📍 Baldev Complex, Madhav Nagar, Kako Road, Jehanabad</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SpecAI. All rights reserved.</span>
+      <div class="big-brand">SpecAI.</div>
+    </div>
+  </div>
+</footer>
 
-          if (!currentUser) {
-              pendingAction = 'checkout';
-              document.getElementById('auth-message').innerText = "An active customer identification token is required to initialize the secure order pipeline.";
-              document.getElementById('auth-section').classList.remove('hidden-section');
-              document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
-          } else {
-              showCheckoutGateway();
-          }
-      }
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let allProducts = [];
 
-      function showCheckoutGateway() {
-          pendingAction = null;
-          document.getElementById('checkout-section').classList.remove('hidden-section');
-          document.getElementById('checkout-section').scrollIntoView({ behavior: 'smooth' });
-      }
+  async function loadProducts() {
+    const grid = document.getElementById("product-grid");
+    grid.innerHTML = `<p class="muted">Loading glasses…</p>`;
+    try {
+      const { products } = await apiFetch("/api/products");
+      allProducts = products;
+      renderProducts(products);
+    } catch (err) {
+      grid.innerHTML = `<p class="muted" style="color:var(--red)">Server se connect nahi ho paya. Is the server running?</p>`;
+    }
+  }
 
-      const bookingForm = document.getElementById('smart-booking-form');
-      if (bookingForm) {
-          bookingForm.addEventListener('submit', (e) => {
-              e.preventDefault();
-              if (!currentUser) {
-                  pendingAction = 'booking';
-                  document.getElementById('auth-message').innerText = "Authentication gate active. Please verify your structural identity to route the damaged frame asset data.";
-                  document.getElementById('auth-section').classList.remove('hidden-section');
-                  document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' });
-              } else {
-                  executeBookingPipeline();
-              }
-          });
-      }
+  function renderProducts(products) {
+    const grid = document.getElementById("product-grid");
+    if (!products.length) { grid.innerHTML = `<p class="muted">No products found.</p>`; return; }
+    grid.innerHTML = products.map((p, i) => `
+      <div class="card product" style="cursor:pointer;" onclick="window.location.href='product.html?id=${p.id}'">
+        <div class="p-tag">
+          <span>${["3x Style","2x Style","3x Style"][i%3] || "Style"}</span>
+          <span>⭐ ${(4.5 + Math.random()*0.4).toFixed(1)}</span>
+        </div>
+        <div class="pic"><img src="${p.image}" alt="${p.name}"></div>
+        <div class="meta">
+          <div>
+            <h6>${p.name}</h6>
+            <div class="price">₹${p.price}</div>
+          </div>
+          <button class="add" data-add-to-cart
+            data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-image="${p.image}"
+            onclick="event.stopPropagation()">+</button>
+        </div>
+      </div>
+    `).join("");
+    wireAddToCartButtons();
+  }
 
-      async function executeBookingPipeline() {
-          pendingAction = null;
-          try {
-              const customerName = document.getElementById('customer-name').value;
-              const selectedProblem = document.getElementById('glasses-problem').value;
-              const imageFile = document.getElementById('glasses-image').files[0];
+  function filterProducts(tag, btn) {
+    document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (tag === 'all') { renderProducts(allProducts); return; }
+    renderProducts(allProducts); // filter by tag when backend supports it
+  }
 
-              if(!customerName || !selectedProblem) return;
-
-              const appointmentLetter = `SpecAI Verification Pipeline. Frame Identity: ${customerName}. Damage Profile: ${selectedProblem}.`;
-
-              await setDoc(doc(db, "appointments", customerName), {
-                  customerName: customerName,
-                  problemType: selectedProblem,
-                  imageFileName: imageFile ? imageFile.name : "none",
-                  appointmentLetter: appointmentLetter,
-                  userEmail: currentUser.email,
-                  synchronizedAt: new Date().toISOString()
-              });
-
-              alert(`Technical assessment slot allocated successfully for ${customerName}! Data transmitted to Firestore.`);
-              bookingForm.reset();
-          } catch (error) {
-              alert("Transmission Error: " + error.message);
-          }
-      }
-
-      const signupForm = document.getElementById('signup-form');
-      if (signupForm) {
-          signupForm.addEventListener('submit', (e) => {
-              e.preventDefault();
-              const email = document.getElementById('email').value;
-              const password = document.getElementById('password').value;
-
-              createUserWithEmailAndPassword(auth, email, password)
-                .then(() => { alert("Customer synchronization successful."); signupForm.reset(); })
-                .catch((err) => alert("Security Wall Failed: " + err.message));
-          });
-      }
-
-      const payForm = document.getElementById('payment-form');
-      if(payForm) {
-          payForm.addEventListener('submit', (e) => {
-              e.preventDefault();
-              alert(`Order Authorized! Card processed for $${window.globalCart.price}.`);
-              window.globalCart = { items: [], price: 0 };
-              document.getElementById('cart-count').innerText = 0;
-              document.getElementById('checkout-section').classList.add('hidden-section');
-              payForm.reset();
-          });
-      }
-    </script>
-
-    <script>
-        window.globalCart = { items: [], price: 0 };
-    </script>
+  loadProducts();
+</script>
 </body>
 </html>

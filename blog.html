@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Blog & News</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  .page-hero{background:linear-gradient(135deg,#0c1430,#1a3a7a);color:#fff;padding:60px 0;text-align:center;}
+  .page-hero h1{font-family:var(--serif);font-size:clamp(30px,4vw,48px);margin:0 0 12px;}
+  .content{max-width:1000px;margin:50px auto;padding:0 24px 60px;}
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .blog-card{background:#fff;border-radius:16px;overflow:hidden;}
+  .blog-card .thumb{height:160px;background:var(--sky-200);display:flex;align-items:center;justify-content:center;font-size:48px;}
+  .blog-card .bc-body{padding:20px;}
+  .blog-card .bc-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue-500);margin-bottom:8px;}
+  .blog-card h3{font-family:var(--serif);font-size:18px;margin:0 0 10px;color:var(--navy);line-height:1.3;}
+  .blog-card p{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6;}
+  .blog-card .bc-meta{font-size:12px;color:var(--muted);}
+  @media(max-width:640px){.blog-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">✕ SpecAI.</a>
+  <nav class="navlinks"><a href="index.html">Home</a><a href="index.html#shop">Shop</a></nav>
+  <div class="nav-right"><span id="auth-slot"></span></div>
+</div></header>
+
+<div class="page-hero"><div class="wrap">
+  <h1>Blog & News</h1>
+  <p style="opacity:.8;font-size:15px;">Eye health tips, style guides aur latest updates</p>
+</div></div>
+
+<div class="content">
+  <div class="blog-grid">
+    <div class="blog-card">
+      <div class="thumb">👁️</div>
+      <div class="bc-body">
+        <div class="bc-cat">Eye Health</div>
+        <h3>Screen Time aur Aankhon ki Thakaan — Kaise Bachein?</h3>
+        <p>Ghante bhar mobile aur laptop dekhne ke baad aankhon mein jalan hoti hai? Jaanein blue light se kaise protect karein.</p>
+        <div class="bc-meta">June 2026 · 4 min read</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="thumb">🕶️</div>
+      <div class="bc-body">
+        <div class="bc-cat">Style Guide</div>
+        <h3>2026 Mein Konsa Frame Shape Aapke Chehere Par Sahi Lagega?</h3>
+        <p>Round face, oval face, square face — har chehere ke liye perfect frame ka guide.</p>
+        <div class="bc-meta">May 2026 · 5 min read</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="thumb">🔧</div>
+      <div class="bc-body">
+        <div class="bc-cat">Tips & Tricks</div>
+        <h3>Tute Hue Glasses Ko Ghar Pe Theek Karne Ke 5 Tarike</h3>
+        <p>Loose screw, bent frame, broken nose pad — simple fixes jo aap khud kar sakte hain appointment se pehle.</p>
+        <div class="bc-meta">April 2026 · 3 min read</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="thumb">☀️</div>
+      <div class="bc-body">
+        <div class="bc-cat">UV Protection</div>
+        <h3>UV Protection Sunglasses Kyun Zaroori Hain Indian Summer Mein?</h3>
+        <p>India mein garmi mein UV rays bohot intense hoti hain. Jaanein sahi sunglasses kaise chunein.</p>
+        <div class="bc-meta">March 2026 · 4 min read</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="thumb">💡</div>
+      <div class="bc-body">
+        <div class="bc-cat">Technology</div>
+        <h3>SpecAI Ka AI Glasses Repair System Kaise Kaam Karta Hai?</h3>
+        <p>Humara AI model photo dekh ke automatically detect karta hai ki aapke glasses mein kya problem hai.</p>
+        <div class="bc-meta">Feb 2026 · 6 min read</div>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="thumb">📦</div>
+      <div class="bc-body">
+        <div class="bc-cat">News</div>
+        <h3>SpecAI Ab Jehanabad Se Bihar Ke Sabhi Zilon Mein Deliver Karta Hai</h3>
+        <p>Hamari service ab puri Bihar mein available hai. Free delivery on orders above ₹500.</p>
+        <div class="bc-meta">Jan 2026 · 2 min read</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--navy);color:rgba(255,255,255,.6);padding:30px 0;text-align:center;font-size:13px;">© 2026 SpecAI. All rights reserved.</footer>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script><script src="js/app.js"></script>
+</body></html>

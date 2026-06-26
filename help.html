@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Help Centre</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  .page-hero{background:linear-gradient(135deg,#0c1430,#1a3a7a);color:#fff;padding:60px 0;text-align:center;}
+  .page-hero h1{font-family:var(--serif);font-size:clamp(30px,4vw,48px);margin:0 0 12px;}
+  .content{max-width:800px;margin:50px auto;padding:0 24px;}
+  .faq-section h2{font-family:var(--serif);font-size:24px;color:var(--navy);margin:40px 0 16px;}
+  .faq{background:#fff;border-radius:14px;margin-bottom:10px;overflow:hidden;}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;cursor:pointer;font-weight:600;font-size:15px;}
+  .faq-q:hover{background:var(--sky-100);}
+  .faq-a{display:none;padding:0 20px 18px;font-size:14px;color:var(--muted);line-height:1.7;}
+  .faq.open .faq-a{display:block;}
+  .faq.open .faq-q .arr{transform:rotate(180deg);}
+  .arr{transition:transform .2s;}
+  .contact-box{background:var(--navy);color:#fff;border-radius:18px;padding:32px;text-align:center;margin:40px 0;}
+  .contact-box h3{font-family:var(--serif);font-size:24px;margin:0 0 10px;}
+  .contact-box p{margin:0 0 20px;opacity:.8;font-size:14px;}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
+  .c-item{background:rgba(255,255,255,.1);border-radius:12px;padding:16px;font-size:14px;}
+  .c-item a{color:#fff;}
+  .c-icon{font-size:24px;margin-bottom:8px;}
+  @media(max-width:600px){.contact-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">✕ SpecAI.</a>
+  <nav class="navlinks"><a href="index.html">Home</a><a href="index.html#shop">Shop</a></nav>
+  <div class="nav-right"><span id="auth-slot"></span></div>
+</div></header>
+
+<div class="page-hero"><div class="wrap">
+  <h1>Help Centre</h1>
+  <p style="opacity:.8;font-size:15px;">Frequently asked questions aur support</p>
+</div></div>
+
+<div class="content">
+  <div class="faq-section">
+    <h2>🛍️ Orders & Payments</h2>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Order kaise karta hai? <span class="arr">▼</span></div><div class="faq-a">Index page pe glasses browse karo → Cart mein add karo → Checkout pe jao → UPI se pay karo → UTR number enter karo. Order confirm ho jaata hai.</div></div>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Konse payment methods accept hote hain? <span class="arr">▼</span></div><div class="faq-a">Hum UPI accept karte hain — GPay, PhonePe, Paytm, BHIM, ya koi bhi UPI app. Payment ke baad UTR/Transaction ID enter karni hogi.</div></div>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Invoice kahan milegi? <span class="arr">▼</span></div><div class="faq-a">Payment confirm hone ke turant baad invoice page automatically open ho jaata hai. Wahan se PDF download ya print kar sakte ho.</div></div>
+
+    <h2>🔧 Repair & Appointments</h2>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Glasses repair kaise book karein? <span class="arr">▼</span></div><div class="faq-a">"Fix Your Glasses" page pe jao → Toot
+ e hue glasses ki photo upload karo → AI detect karega problem → Date aur time choose karo → Appointment confirm ho jaati hai.</div></div>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Repair kitne time mein hoti hai? <span class="arr">▼</span></div><div class="faq-a">Simple repairs (screw, nose pad) 1-2 din mein. Frame replacement ya lens repair 3-5 working days le sakti hai.</div></div>
+
+    <h2>📦 Delivery & Returns</h2>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Delivery kitne din mein aati hai? <span class="arr">▼</span></div><div class="faq-a">Jehanabad aur nearby areas mein 2-3 din. Bihar ke baaki areas mein 4-6 din. All India delivery available hai.</div></div>
+    <div class="faq"><div class="faq-q" onclick="toggleFaq(this)">Return policy kya hai? <span class="arr">▼</span></div><div class="faq-a">7 din return policy hai. Product unopened aur original packaging mein hona chahiye. Damaged products ke liye full refund milega.</div></div>
+  </div>
+
+  <div class="contact-box">
+    <h3>Aur help chahiye?</h3>
+    <p>Directly humse contact karo — hum 24 ghante ke andar reply karte hain</p>
+    <div class="contact-grid">
+      <div class="c-item"><div class="c-icon">📞</div><a href="tel:9334905548">9334905548</a></div>
+      <div class="c-item"><div class="c-icon">✉️</div><a href="mailto:suraj8102564@gmail.com">suraj8102564@gmail.com</a></div>
+      <div class="c-item"><div class="c-icon">📍</div>Baldev Complex, Madhav Nagar, Kako Road, Jehanabad</div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--navy);color:rgba(255,255,255,.6);padding:30px 0;text-align:center;font-size:13px;">© 2026 SpecAI. All rights reserved.</footer>
+<script>
+function toggleFaq(el){const p=el.parentElement;p.classList.toggle('open');}
+</script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script><script src="js/app.js"></script>
+</body></html>

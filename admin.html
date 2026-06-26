@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Admin Panel</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  body{background:#f0f4ff;}
+  .admin-wrap{max-width:960px;margin:0 auto;padding:30px 20px 60px;}
+  .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
+  .admin-header h1{font-family:var(--serif);font-size:28px;color:var(--navy);margin:0;}
+  .product-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .product-table th{background:var(--navy);color:#fff;padding:13px 16px;font-size:12px;text-align:left;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+  .product-table td{padding:14px 16px;border-bottom:1px solid #f0f4ff;font-size:14px;vertical-align:middle;}
+  .product-table tr:last-child td{border-bottom:none;}
+  .product-table tr:hover td{background:#f9fbff;}
+  .product-table img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:var(--sky-100);}
+  .badge-stock{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;}
+  .in-stock{background:#d1fae5;color:#065f46;}
+  .low-stock{background:#fef3c7;color:#92400e;}
+  .btn-edit{padding:7px 14px;border:1.5px solid var(--navy);border-radius:20px;background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--navy);}
+  .btn-del{padding:7px 14px;border:1.5px solid var(--red);border-radius:20px;background:transparent;font-size:12px;font-weight:600;cursor:pointer;color:var(--red);}
+
+  /* Modal */
+  #modal-overlay{position:fixed;inset:0;background:rgba(12,20,48,.5);display:none;align-items:center;justify-content:center;z-index:1000;}
+  #modal-overlay.open{display:flex;}
+  .modal{background:#fff;border-radius:20px;width:500px;max-width:95vw;padding:32px;max-height:90vh;overflow-y:auto;}
+  .modal h2{font-family:var(--serif);font-size:22px;color:var(--navy);margin:0 0 22px;}
+  .modal-actions{display:flex;gap:10px;margin-top:24px;}
+  .img-preview{width:100%;height:140px;border-radius:12px;background:var(--sky-100);display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;}
+  .img-preview img{width:100%;height:100%;object-fit:contain;}
+  .section-card{background:#fff;border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .section-card h2{font-family:var(--serif);font-size:18px;color:var(--navy);margin:0 0 6px;}
+  .section-card p{font-size:13px;color:var(--muted);margin:0 0 16px;}
+  .tip-box{background:var(--sky-100);border-radius:12px;padding:16px;font-size:13px;color:var(--muted);line-height:1.7;margin-top:16px;}
+  .tip-box strong{color:var(--navy);}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">✕ SpecAI.</a>
+  <nav class="navlinks"><a href="index.html">← Store</a></nav>
+</div></header>
+
+<div class="admin-wrap">
+  <div class="admin-header">
+    <h1>🛠️ Admin Panel</h1>
+    <button class="btn-dark" onclick="openModal()">+ Add New Product</button>
+  </div>
+
+  <!-- How to add products tip -->
+  <div class="section-card">
+    <h2>📦 Products</h2>
+    <p>Neeche table mein sabhi products hain. Edit ya delete karo, ya naya product add karo.</p>
+    <table class="product-table" id="products-table">
+      <thead><tr>
+        <th>Image</th><th>Name</th><th>Price</th><th>Tag</th><th>Stock</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="tbody">
+        <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px;">Loading products…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- How to add image tip -->
+  <div class="section-card">
+    <h2>🖼️ Product Image Kaise Add Karein?</h2>
+    <p>2 aasan tarike hain:</p>
+    <div class="tip-box">
+      <strong>Option 1 — Free Image URL (Recommended):</strong><br>
+      1. Google Images pe apna product dhundho<br>
+      2. Image pe right click → "Copy image address"<br>
+      3. Ya <a href="https://www.pexels.com" target="_blank" style="color:var(--blue-500);">pexels.com</a> pe free stock photos milte hain<br>
+      4. Woh URL neeche "Image URL" field mein paste karo<br><br>
+      <strong>Option 2 — Google Drive:</strong><br>
+      1. Google Drive pe photo upload karo<br>
+      2. File pe right click → "Share" → "Anyone with link"<br>
+      3. Link se file ID copy karo: drive.google.com/file/d/<strong>FILE_ID</strong>/view<br>
+      4. URL banao: https://drive.google.com/uc?id=FILE_ID<br>
+      5. Yeh URL paste karo
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="modal-overlay">
+  <div class="modal">
+    <h2 id="modal-title">Add New Product</h2>
+    <input type="hidden" id="edit-id">
+    <div class="img-preview" id="img-preview">
+      <span style="color:var(--muted);font-size:13px;">Image preview yahan aayegi</span>
+    </div>
+    <div class="field">
+      <label>Image URL *</label>
+      <input type="url" id="f-image" placeholder="https://..." oninput="previewImg(this.value)">
+    </div>
+    <div class="field">
+      <label>Product Name *</label>
+      <input type="text" id="f-name" placeholder="jaise: Blue Light Aviator">
+    </div>
+    <div class="field">
+      <label>Price (₹) *</label>
+      <input type="number" id="f-price" placeholder="jaise: 599" min="1">
+    </div>
+    <div class="field">
+      <label>Tag / Category</label>
+      <input type="text" id="f-tag" placeholder="jaise: 3x Style, Blue Light, Classic">
+    </div>
+    <div class="field">
+      <label>Stock Quantity</label>
+      <input type="number" id="f-stock" placeholder="jaise: 20" min="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-dark" onclick="saveProduct()">💾 Save Product</button>
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script><script src="js/app.js"></script>
+<script>
+let products = [];
+
+async function loadProducts() {
+  try {
+    const { products: p } = await apiFetch('/api/products');
+    products = p;
+    renderTable();
+  } catch(e) {
+    document.getElementById('tbody').innerHTML = `<tr><td colspan="6" style="color:red;text-align:center;padding:20px;">Server se connect nahi ho paya. npm start karein.</td></tr>`;
+  }
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tbody');
+  if (!products.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px;">Koi product nahi hai. "Add New Product" se add karein.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = products.map(p => `
+    <tr>
+      <td><img src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22><rect fill=%22%23eef4fc%22 width=%2256%22 height=%2256%22/><text y=%2235%22 x=%2210%22 font-size=%2224%22>🕶️</text></svg>'"></td>
+      <td><strong>${p.name}</strong></td>
+      <td><strong>₹${p.price}</strong></td>
+      <td><span style="background:var(--sky-100);padding:3px 10px;border-radius:20px;font-size:12px;">${p.tag||'—'}</span></td>
+      <td><span class="badge-stock ${(p.stock||0)>5?'in-stock':'low-stock'}">${p.stock||0} units</span></td>
+      <td style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-edit" onclick='editProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})'>✏️ Edit</button>
+        <button class="btn-del" onclick="deleteProduct('${p.id}','${p.name}')">🗑 Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openModal(p) {
+  document.getElementById('modal-title').textContent = p ? 'Edit Product' : 'Add New Product';
+  document.getElementById('edit-id').value = p?.id || '';
+  document.getElementById('f-image').value = p?.image || '';
+  document.getElementById('f-name').value = p?.name || '';
+  document.getElementById('f-price').value = p?.price || '';
+  document.getElementById('f-tag').value = p?.tag || '';
+  document.getElementById('f-stock').value = p?.stock || '';
+  previewImg(p?.image || '');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function editProduct(p){ openModal(p); }
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+
+function previewImg(url) {
+  const box = document.getElementById('img-preview');
+  if (url) {
+    box.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<span style=color:red;font-size:13px>Image load nahi hui — URL check karein</span>'">`;
+  } else {
+    box.innerHTML = `<span style="color:var(--muted);font-size:13px;">Image preview yahan aayegi</span>`;
+  }
+}
+
+async function saveProduct() {
+  const id = document.getElementById('edit-id').value;
+  const image = document.getElementById('f-image').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const price = parseInt(document.getElementById('f-price').value);
+  const tag = document.getElementById('f-tag').value.trim() || '3x Style';
+  const stock = parseInt(document.getElementById('f-stock').value) || 10;
+
+  if (!image || !name || !price) { alert('Image URL, Name aur Price zaroori hain!'); return; }
+
+  const product = { id: id || 'p' + Date.now(), name, price, tag, image, stock };
+
+  try {
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `/api/products/${id}` : '/api/products';
+    await apiFetch(url, { method, body: JSON.stringify(product) });
+    closeModal();
+    loadProducts();
+  } catch(e) {
+    // Fallback: update locally if API doesn't support yet
+    if (id) {
+      const idx = products.findIndex(p => p.id === id);
+      if (idx >= 0) products[idx] = product;
+    } else {
+      products.push(product);
+    }
+    renderTable();
+    closeModal();
+    alert('Product locally updated! Permanent save ke liye server/data.seed.json bhi update karein (neeche bataya gaya hai).');
+  }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`"${name}" ko delete karna chahte ho?`)) return;
+  try {
+    await apiFetch(`/api/products/${id}`, { method: 'DELETE' });
+    loadProducts();
+  } catch(e) {
+    products = products.filter(p => p.id !== id);
+    renderTable();
+    alert('Product locally removed. Permanent delete ke liye data.seed.json se bhi hatao.');
+  }
+}
+
+// Close on backdrop click
+document.getElementById('modal-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+
+loadProducts();
+</script>
+</body></html>

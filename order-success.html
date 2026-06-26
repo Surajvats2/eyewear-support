@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Order Confirmed</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+  .success-wrap{max-width:480px;margin:80px auto;padding:0 20px;text-align:center;}
+  .check-circle{width:72px;height:72px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 24px;}
+  .success-wrap h1{font-family:var(--serif);font-size:28px;color:var(--navy);margin:0 0 8px;}
+  .meta{background:#f7f9fc;border-radius:10px;padding:18px;margin:24px 0;text-align:left;font-size:14px;line-height:2;}
+  .meta span{font-weight:600;}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">✕ SpecAI.</a>
+  </div>
+</header>
+
+<div class="wrap success-wrap">
+  <div class="check-circle">✓</div>
+  <h1>Payment Successful!</h1>
+  <p class="muted">Thank you for your purchase. Your order has been confirmed.</p>
+  <div class="meta" id="meta"></div>
+  <a class="btn-dark" href="index.html" style="display:inline-flex;margin-top:8px;">Back to Store</a>
+</div>
+
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById("meta").innerHTML = `
+    <div>Order ID: <span>${(p.get("orderId")||"").slice(0,8).toUpperCase()}</span></div>
+    <div>Payment ID: <span>${p.get("paymentId")||"—"}</span></div>
+    <div>Amount Paid: <span>₹${p.get("amount")||"0"}</span></div>
+  `;
+</script>
+</body>
+</html>

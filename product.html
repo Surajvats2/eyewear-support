@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpecAI — Product Detail</title>
+<link rel="stylesheet" href="css/shared.css">
+<style>
+body { background: #f0f4ff; }
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb { font-size: 13px; color: var(--muted); padding: 18px 0 0; }
+.breadcrumb a { color: var(--blue-500); }
+.breadcrumb span { margin: 0 6px; }
+
+/* ===== MAIN GRID ===== */
+.pd-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+.pd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 24px; align-items: start; }
+
+/* ===== LEFT — Images ===== */
+.img-col {}
+.main-img-box {
+  background: #fff; border-radius: 20px; overflow: hidden;
+  height: 420px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px; position: relative;
+}
+.main-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; padding: 20px; }
+.zoom-hint { position: absolute; bottom: 14px; right: 14px; background: rgba(0,0,0,.45); color: #fff; font-size: 11px; border-radius: 20px; padding: 4px 10px; }
+.thumb-row { display: flex; gap: 10px; }
+.thumb {
+  width: 72px; height: 72px; border-radius: 12px; overflow: hidden;
+  background: #fff; border: 2px solid transparent; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.thumb.active { border-color: var(--navy); }
+.thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+
+/* ===== RIGHT — Info ===== */
+.info-col {}
+.p-category { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--blue-500); margin-bottom: 8px; }
+.p-name { font-family: var(--serif); font-size: clamp(22px, 3vw, 32px); color: var(--navy); margin: 0 0 10px; line-height: 1.2; }
+
+/* Rating */
+.rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.stars { color: #f59e0b; font-size: 16px; letter-spacing: 2px; }
+.rating-count { font-size: 13px; color: var(--blue-500); text-decoration: underline; cursor: pointer; }
+.verified-badge { font-size: 11px; background: #d1fae5; color: #065f46; padding: 3px 10px; border-radius: 20px; font-weight: 700; }
+
+/* Price */
+.price-block { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+.price-main { font-family: var(--serif); font-size: 34px; font-weight: 700; color: var(--navy); }
+.price-main .sym { font-size: 20px; vertical-align: super; }
+.price-orig { font-size: 15px; color: var(--muted); text-decoration: line-through; margin-left: 8px; }
+.price-save { font-size: 13px; color: var(--green); font-weight: 700; margin-left: 8px; }
+.price-note { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.emi-line { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.emi-line b { color: var(--ink); }
+
+/* Stock */
+.stock-line { display: flex; align-items: center; gap: 8px; font-size: 13.5px; margin-bottom: 18px; font-weight: 600; }
+.stock-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+.stock-dot.low { background: #f59e0b; }
+
+/* Quantity */
+.qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.qty-row label { font-size: 13px; font-weight: 700; color: var(--muted); }
+.qty-ctrl { display: flex; align-items: center; gap: 0; background: #fff; border-radius: 10px; border: 1.5px solid var(--line); overflow: hidden; }
+.qty-ctrl button { width: 38px; height: 38px; background: none; border: none; font-size: 20px; font-weight: 700; cursor: pointer; color: var(--navy); }
+.qty-ctrl button:hover { background: var(--sky-100); }
+.qty-ctrl span { width: 38px; text-align: center; font-size: 15px; font-weight: 700; }
+
+/* CTA Buttons */
+.cta-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.btn-buynow {
+  width: 100%; padding: 16px; border-radius: 30px; font-size: 15.5px; font-weight: 700;
+  background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-buynow:hover { opacity: .92; }
+.btn-addcart {
+  width: 100%; padding: 16px; border-radius: 30px; font-size: 15.5px; font-weight: 700;
+  background: var(--navy); color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-addcart:hover { opacity: .88; }
+.btn-addcart.added { background: var(--green); }
+
+/* Delivery & protection */
+.assurance-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.assur { background: #fff; border-radius: 12px; padding: 12px 14px; font-size: 12.5px; display: flex; align-items: flex-start; gap: 8px; }
+.assur .ai { font-size: 20px; }
+.assur strong { display: block; font-size: 13px; color: var(--navy); margin-bottom: 2px; }
+
+/* Highlights */
+.highlights { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+.highlights h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin: 0 0 12px; }
+.highlights ul { margin: 0; padding: 0 0 0 18px; }
+.highlights ul li { font-size: 13.5px; color: var(--muted); line-height: 1.8; }
+
+/* ===== DESCRIPTION SECTION ===== */
+.desc-section { margin-top: 40px; }
+.desc-section h2 { font-family: var(--serif); font-size: 22px; color: var(--navy); margin: 0 0 16px; border-bottom: 2px solid var(--sky-200); padding-bottom: 10px; }
+.spec-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; }
+.spec-table tr { border-bottom: 1px solid var(--sky-100); }
+.spec-table tr:last-child { border-bottom: none; }
+.spec-table td { padding: 13px 18px; font-size: 14px; }
+.spec-table td:first-child { width: 40%; color: var(--muted); font-weight: 600; background: var(--sky-100); }
+.spec-table td:last-child { color: var(--ink); }
+
+/* ===== REVIEWS ===== */
+.reviews-section { margin-top: 40px; }
+.reviews-section h2 { font-family: var(--serif); font-size: 22px; color: var(--navy); margin: 0 0 16px; border-bottom: 2px solid var(--sky-200); padding-bottom: 10px; }
+.review-summary { background: #fff; border-radius: 16px; padding: 22px; display: flex; gap: 28px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.big-rating { text-align: center; }
+.big-rating .num { font-family: var(--serif); font-size: 52px; font-weight: 700; color: var(--navy); line-height: 1; }
+.big-rating .stars { display: block; font-size: 20px; margin: 4px 0; }
+.big-rating p { margin: 0; font-size: 12px; color: var(--muted); }
+.bar-row { flex: 1; min-width: 200px; }
+.bar-item { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 12.5px; }
+.bar-track { flex: 1; height: 8px; background: var(--sky-100); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; background: #f59e0b; border-radius: 10px; }
+.review-card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+.review-card .rv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.review-card .rv-name { font-weight: 700; font-size: 14px; }
+.review-card .rv-stars { color: #f59e0b; font-size: 14px; }
+.review-card .rv-date { font-size: 12px; color: var(--muted); }
+.review-card .rv-tag { font-size: 11px; background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+.review-card p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* Related */
+.related-section { margin-top: 40px; }
+.related-section h2 { font-family: var(--serif); font-size: 22px; color: var(--navy); margin: 0 0 16px; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.rel-card { background: #fff; border-radius: 14px; padding: 16px; cursor: pointer; }
+.rel-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.rel-card img { width: 100%; height: 100px; object-fit: contain; border-radius: 8px; background: var(--sky-100); margin-bottom: 10px; }
+.rel-card h5 { font-family: var(--serif); font-size: 14px; margin: 0 0 4px; color: var(--navy); }
+.rel-card .rel-price { font-weight: 700; font-size: 14px; color: var(--navy); }
+
+@media (max-width: 760px) {
+  .pd-grid { grid-template-columns: 1fr; gap: 24px; }
+  .assurance-row { grid-template-columns: 1fr; }
+  .related-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">✕ SpecAI.</a>
+    <nav class="navlinks">
+      <a href="index.html#shop">Shop</a>
+      <a href="appointment.html">Repair</a>
+      <a href="account.html">Orders</a>
+    </nav>
+    <div class="nav-right">
+      <span id="auth-slot"></span>
+      <button class="icon-btn" onclick="openCart()" aria-label="Cart">🛍<span class="badge cart-badge" style="display:none">0</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="pd-wrap">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="index.html#shop">Glasses</a><span>›</span>
+    <span id="bc-name">Loading…</span>
+  </div>
+
+  <div class="pd-grid" id="pd-content" style="display:none;">
+    <!-- LEFT: Images -->
+    <div class="img-col">
+      <div class="main-img-box">
+        <img id="main-img" src="" alt="Product">
+        <div class="zoom-hint">🔍 Tap to zoom</div>
+      </div>
+      <div class="thumb-row" id="thumb-row">
+        <!-- thumbs injected -->
+      </div>
+    </div>
+
+    <!-- RIGHT: Info -->
+    <div class="info-col">
+      <div class="p-category" id="p-cat">Eyewear</div>
+      <h1 class="p-name" id="p-name">—</h1>
+
+      <div class="rating-row">
+        <span class="stars" id="p-stars">★★★★★</span>
+        <span class="rating-count" id="p-rcount">128 ratings</span>
+        <span class="verified-badge">✓ Verified Seller</span>
+      </div>
+
+      <div class="price-block">
+        <div>
+          <span class="price-main"><span class="sym">₹</span><span id="p-price">—</span></span>
+          <span class="price-orig" id="p-orig"></span>
+          <span class="price-save" id="p-save"></span>
+        </div>
+        <div class="price-note">Inclusive of all taxes · Free delivery</div>
+        <div class="emi-line">No Cost EMI from <b>₹<span id="p-emi">—</span>/month</b> · All major cards</div>
+      </div>
+
+      <div class="stock-line">
+        <div class="stock-dot" id="stock-dot"></div>
+        <span id="stock-text">In Stock</span>
+      </div>
+
+      <div class="qty-row">
+        <label>Qty:</label>
+        <div class="qty-ctrl">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qty-val">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+
+      <div class="cta-stack">
+        <button class="btn-buynow" onclick="buyNow()">⚡ Buy Now</button>
+        <button class="btn-addcart" id="add-btn" onclick="addToCartAndShow()">🛍 Add to Cart</button>
+      </div>
+
+      <div class="assurance-row">
+        <div class="assur"><span class="ai">🚚</span><div><strong>Free Delivery</strong>2–5 business days</div></div>
+        <div class="assur"><span class="ai">↩️</span><div><strong>7-Day Returns</strong>Easy no-questions return</div></div>
+        <div class="assur"><span class="ai">🔒</span><div><strong>Secure Payment</strong>UPI · Encrypted</div></div>
+        <div class="assur"><span class="ai">✅</span><div><strong>Genuine Product</strong>Quality guaranteed</div></div>
+      </div>
+
+      <div class="highlights">
+        <h4>Product Highlights</h4>
+        <ul id="p-highlights">
+          <li>Premium acetate frame — lightweight &amp; durable</li>
+          <li>UV 400 protection lens</li>
+          <li>Blue light blocking coating available</li>
+          <li>Anti-scratch &amp; anti-reflective coating</li>
+          <li>Comfortable nose pads — adjustable fit</li>
+          <li>Comes with premium hard case &amp; cleaning cloth</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="pd-loading" style="text-align:center;padding:80px 0;color:var(--muted);">Loading product…</div>
+
+  <!-- Description + Specs -->
+  <div class="desc-section" id="desc-section" style="display:none;">
+    <h2>Product Description</h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.8;background:#fff;border-radius:14px;padding:20px;" id="p-desc">—</p>
+
+    <h2 style="margin-top:28px;">Specifications</h2>
+    <table class="spec-table" id="spec-table"></table>
+  </div>
+
+  <!-- Reviews -->
+  <div class="reviews-section" id="reviews-section" style="display:none;">
+    <h2>Customer Reviews</h2>
+    <div class="review-summary">
+      <div class="big-rating">
+        <div class="num" id="avg-rating">4.7</div>
+        <span class="stars">★★★★★</span>
+        <p id="total-reviews">128 ratings</p>
+      </div>
+      <div class="bar-row">
+        <div class="bar-item"><span style="width:36px;">5 ★</span><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div><span style="width:30px;font-size:12px;">72%</span></div>
+        <div class="bar-item"><span style="width:36px;">4 ★</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><span style="width:30px;font-size:12px;">18%</span></div>
+        <div class="bar-item"><span style="width:36px;">3 ★</span><div class="bar-track"><div class="bar-fill" style="width:6%"></div></div><span style="width:30px;font-size:12px;">6%</span></div>
+        <div class="bar-item"><span style="width:36px;">2 ★</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span style="width:30px;font-size:12px;">3%</span></div>
+        <div class="bar-item"><span style="width:36px;">1 ★</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span style="width:30px;font-size:12px;">1%</span></div>
+      </div>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="related-section" id="related-section" style="display:none;">
+    <h2>You May Also Like</h2>
+    <div class="related-grid" id="related-grid"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/app.js"></script>
+<script>
+let product = null;
+let qty = 1;
+let allProducts = [];
+
+// Sample reviews per product
+const REVIEWS = [
+  { name: "Rahul K.", stars: 5, date: "12 June 2026", tag: "Verified Purchase", text: "Ekdum mast glasses hain! Quality bahut acchi hai, price bhi reasonable. Delivery bhi jaldi aayi. Highly recommend!" },
+  { name: "Priya S.", stars: 5, date: "8 June 2026", tag: "Verified Purchase", text: "Maine 3 din pahle order kiya tha aur aaj mil gaya. Frame ka quality amazing hai. Paise wasool!" },
+  { name: "Amir H.", stars: 4, date: "1 June 2026", tag: "Verified Purchase", text: "Good product. Blue light feature kaam karta hai, aankhon ki thakaan kam hui. Ek star minus for packaging." },
+  { name: "Sneha M.", stars: 5, date: "25 May 2026", tag: "Verified Purchase", text: "Ye glasses mujhe bahut pasand aayi. Style aur comfort dono hain. Sab ko recommend karungi!" },
+];
+
+async function loadProduct() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { document.getElementById('pd-loading').textContent = 'Product ID missing.'; return; }
+
+  try {
+    const { products } = await apiFetch('/api/products');
+    allProducts = products;
+    product = products.find(p => p.id === id);
+    if (!product) { document.getElementById('pd-loading').textContent = 'Product not found.'; return; }
+    renderProduct();
+  } catch(e) {
+    document.getElementById('pd-loading').textContent = 'Server se connect nahi ho paya.';
+  }
+}
+
+function renderProduct() {
+  document.title = `SpecAI — ${product.name}`;
+  document.getElementById('bc-name').textContent = product.name;
+  document.getElementById('pd-loading').style.display = 'none';
+  document.getElementById('pd-content').style.display = 'grid';
+  document.getElementById('desc-section').style.display = 'block';
+  document.getElementById('reviews-section').style.display = 'block';
+  document.getElementById('related-section').style.display = 'block';
+
+  // Images (use product image + slight variations for thumbs)
+  document.getElementById('main-img').src = product.image;
+  const thumbRow = document.getElementById('thumb-row');
+  const thumbImgs = [product.image, product.image, product.image];
+  thumbRow.innerHTML = thumbImgs.map((img, i) => `
+    <div class="thumb ${i===0?'active':''}" onclick="setThumb(this,'${img}')">
+      <img src="${img}" alt="">
+    </div>
+  `).join('');
+
+  // Info
+  document.getElementById('p-cat').textContent = product.tag || 'Eyewear';
+  document.getElementById('p-name').textContent = product.name;
+
+  // Random rating 4.5–4.9
+  const rating = (4.5 + Math.random() * 0.4).toFixed(1);
+  const rcount = Math.floor(80 + Math.random() * 200);
+  document.getElementById('p-stars').textContent = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+  document.getElementById('p-rcount').textContent = rcount + ' ratings';
+  document.getElementById('avg-rating').textContent = rating;
+  document.getElementById('total-reviews').textContent = rcount + ' ratings';
+
+  // Price
+  const price = product.price;
+  const orig = Math.round(price * 1.3);
+  const save = orig - price;
+  document.getElementById('p-price').textContent = price;
+  document.getElementById('p-orig').textContent = '₹' + orig;
+  document.getElementById('p-save').textContent = 'Save ₹' + save + ' (' + Math.round(save/orig*100) + '% off)';
+  document.getElementById('p-emi').textContent = Math.round(price / 3);
+
+  // Stock
+  const stock = product.stock || 20;
+  if (stock < 5) {
+    document.getElementById('stock-dot').classList.add('low');
+    document.getElementById('stock-text').textContent = `Only ${stock} left in stock — order soon!`;
+    document.getElementById('stock-text').style.color = '#d97706';
+  } else {
+    document.getElementById('stock-text').textContent = 'In Stock (' + stock + ' units available)';
+    document.getElementById('stock-text').style.color = 'var(--green)';
+  }
+
+  // Description
+  document.getElementById('p-desc').textContent =
+    `${product.name} — ek premium eyewear piece jo style aur comfort ko perfectly combine karta hai. High-quality materials se banaya gaya hai jo long-lasting durability ensure karta hai. ` +
+    `Ye frame UV 400 protection ke saath aata hai jo aapki aankhon ko harmful sun rays se bachata hai. ` +
+    `Lightweight design se ye puri din pehne mein comfortable rehta hai. Har pair ke saath hard carrying case aur microfiber cleaning cloth included hai.`;
+
+  // Specs
+  document.getElementById('spec-table').innerHTML = [
+    ['Brand', 'SpecAI'],
+    ['Model', product.name],
+    ['Frame Material', 'Premium Acetate'],
+    ['Lens Material', 'Polycarbonate'],
+    ['UV Protection', 'UV 400'],
+    ['Blue Light Filter', 'Yes — coating included'],
+    ['Frame Color', 'Classic / Multiple variants'],
+    ['Gender', 'Unisex'],
+    ['Warranty', '6 months manufacturer warranty'],
+    ['In The Box', 'Glasses + Hard Case + Cleaning Cloth + Manual'],
+    ['Country of Origin', 'India'],
+  ].map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+
+  // Reviews
+  document.getElementById('review-list').innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="rv-header">
+        <span class="rv-name">${r.name}</span>
+        <span class="rv-stars">${'★'.repeat(r.stars)}</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+        <span class="rv-tag">${r.tag}</span>
+        <span class="rv-date">${r.date}</span>
+      </div>
+      <p>${r.text}</p>
+    </div>
+  `).join('');
+
+  // Related products (other products)
+  const related = allProducts.filter(p => p.id !== product.id).slice(0, 3);
+  document.getElementById('related-grid').innerHTML = related.map(p => `
+    <div class="rel-card" onclick="window.location.href='product.html?id=${p.id}'">
+      <img src="${p.image}" alt="${p.name}">
+      <h5>${p.name}</h5>
+      <div class="rel-price">₹${p.price}</div>
+    </div>
+  `).join('');
+}
+
+function setThumb(el, src) {
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('main-img').src = src;
+}
+
+function changeQty(delta) {
+  qty = Math.max(1, Math.min(10, qty + delta));
+  document.getElementById('qty-val').textContent = qty;
+}
+
+function addToCartAndShow() {
+  if (!product) return;
+  for (let i = 0; i < qty; i++) Cart.add(product.id, product.name, product.price, product.image);
+  const btn = document.getElementById('add-btn');
+  btn.textContent = '✅ Added to Cart!';
+  btn.classList.add('added');
+  setTimeout(() => { btn.textContent = '🛍 Add to Cart'; btn.classList.remove('added'); }, 2000);
+  openCart();
+}
+
+function buyNow() {
+  if (!product) return;
+  for (let i = 0; i < qty; i++) Cart.add(product.id, product.name, product.price, product.image);
+  window.location.href = 'checkout.html';
+}
+
+loadProduct();
+</script>
+</body>
+</html>
